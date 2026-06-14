@@ -1,1079 +1,230 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" href="/favicon.ico">
-  <title>Model Auctions — Independent Creative Platform</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --black: #0a0a0a;
-      --white: #f5f3ef;
-      --off: #e8e4dd;
-      --mid: #9a9690;
-      --accent: #c8b89a;
-      --red: #c0392b;
-      --font-display: 'Bebas Neue', sans-serif;
-      --font-body: 'Cormorant Garamond', serif;
-      --font-mono: 'DM Mono', monospace;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--black);
-      color: var(--white);
-      font-family: var(--font-body);
-      font-size: 18px;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    /* ── NAV ── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.2rem 2.5rem;
-      background: rgba(10,10,10,0.92);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-    }
-
-    .nav-logo {
-      display: flex;
-      align-items: center;
-      text-decoration: none;
-    }
-
-    .nav-logo img {
-      height: 48px;
-      width: auto;
-      filter: invert(1);
-      transition: opacity 0.2s;
-    }
-
-    .nav-logo img:hover {
-      opacity: 0.8;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--mid);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover { color: var(--white); }
-
-    .nav-cta {
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--black);
-      background: var(--white);
-      padding: 0.55rem 1.2rem;
-      text-decoration: none;
-      transition: background 0.2s, color 0.2s;
-    }
-
-    .nav-cta:hover {
-      background: var(--accent);
-    }
-
-    /* ── HERO ── */
-    .hero {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      padding-top: 5rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-left {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 5rem 3rem 5rem 4rem;
-      position: relative;
-      z-index: 2;
-    }
-
-    .hero-eyebrow {
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.2s forwards;
-    }
-
-    .hero-headline {
-      font-family: var(--font-display);
-      font-size: clamp(5rem, 10vw, 10rem);
-      line-height: 0.9;
-      letter-spacing: 0.02em;
-      color: var(--white);
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.4s forwards;
-    }
-
-    .hero-headline em {
-      display: block;
-      font-style: italic;
-      font-family: var(--font-body);
-      font-size: clamp(2rem, 4vw, 4.2rem);
-      font-weight: 300;
-      letter-spacing: 0.04em;
-      color: var(--accent);
-      line-height: 1.3;
-      margin-top: 0.4rem;
-    }
-
-    .hero-body {
-      font-size: 1rem;
-      font-weight: 300;
-      color: var(--mid);
-      max-width: 380px;
-      margin-top: 2rem;
-      line-height: 1.8;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.6s forwards;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 1rem;
-      margin-top: 2.5rem;
-      flex-wrap: wrap;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.8s forwards;
-    }
-
-    .btn-primary {
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--black);
-      background: var(--white);
-      padding: 0.9rem 2rem;
-      text-decoration: none;
-      transition: background 0.2s;
-    }
-
-    .btn-primary:hover { background: var(--accent); }
-
-    .btn-ghost {
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--white);
-      border: 1px solid rgba(255,255,255,0.3);
-      padding: 0.9rem 2rem;
-      text-decoration: none;
-      transition: border-color 0.2s, color 0.2s;
-    }
-
-    .btn-ghost:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    .hero-right {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-img-placeholder {
-      width: 100%;
-      height: 100%;
-      background: #1a1a1a;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 1rem;
-      border-left: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .hero-img-placeholder .ph-label {
-      font-family: var(--font-mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: #333;
-    }
-
-    .hero-img-placeholder .ph-icon {
-      width: 60px;
-      height: 60px;
-      border: 1px solid #2a2a2a;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .hero-img-placeholder .ph-icon svg {
-      width: 24px;
-      height: 24px;
-      opacity: 0.2;
-    }
-
-    .hero-ticker {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      overflow: hidden;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      background: rgba(10,10,10,0.9);
-      padding: 0.7rem 0;
-    }
-
-    .ticker-inner {
-      display: flex;
-      gap: 4rem;
-      animation: ticker 22s linear infinite;
-      white-space: nowrap;
-    }
-
-    .ticker-item {
-      font-family: var(--font-mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--mid);
-      flex-shrink: 0;
-    }
-
-    .ticker-item span { color: var(--accent); margin-right: 0.5rem; }
-
-    /* ── SECTION SCAFFOLDING ── */
-    section { padding: 6rem 4rem; }
-
-    .section-label {
-      font-family: var(--font-mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--accent);
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-
-    .section-label::after {
-      content: '';
-      flex: 1;
-      max-width: 60px;
-      height: 1px;
-      background: var(--accent);
-      opacity: 0.4;
-    }
-
-    .section-title {
-      font-family: var(--font-display);
-      font-size: clamp(3rem, 6vw, 6rem);
-      line-height: 0.95;
-      letter-spacing: 0.02em;
-      color: var(--white);
-    }
-
-    /* ── MISSION ── */
-    .mission {
-      background: var(--white);
-      color: var(--black);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6rem;
-      align-items: center;
-    }
-
-    .mission .section-label { color: var(--black); opacity: 0.4; }
-    .mission .section-label::after { background: var(--black); }
-
-    .mission .section-title { color: var(--black); }
-
-    .mission-body {
-      font-size: 1.15rem;
-      font-weight: 300;
-      line-height: 1.9;
-      color: #3a3a3a;
-    }
-
-    .mission-body p + p { margin-top: 1.2rem; }
-
-    .mission-pillars {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1px;
-      background: rgba(0,0,0,0.1);
-      margin-top: 2.5rem;
-      border: 1px solid rgba(0,0,0,0.1);
-    }
-
-    .pillar {
-      background: var(--white);
-      padding: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
-
-    .pillar-num {
-      font-family: var(--font-mono);
-      font-size: 0.6rem;
-      color: var(--accent);
-      letter-spacing: 0.15em;
-    }
-
-    .pillar-name {
-      font-family: var(--font-display);
-      font-size: 1.3rem;
-      letter-spacing: 0.05em;
-      color: var(--black);
-    }
-
-    /* ── EDITORIAL GRID ── */
-    .editorial {
-      background: var(--black);
-      border-top: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .editorial-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      margin-bottom: 3rem;
-    }
-
-    .editorial-link {
-      font-family: var(--font-mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--mid);
-      text-decoration: none;
-      border-bottom: 1px solid rgba(255,255,255,0.15);
-      padding-bottom: 2px;
-      transition: color 0.2s, border-color 0.2s;
-    }
-
-    .editorial-link:hover { color: var(--white); border-color: var(--white); }
-
-    .editorial-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr;
-      grid-template-rows: 360px 240px;
-      gap: 4px;
-    }
-
-    .ed-card {
-      position: relative;
-      overflow: hidden;
-      background: #141414;
-      cursor: pointer;
-    }
-
-    .ed-card:first-child {
-      grid-row: 1 / 3;
-    }
-
-    .ed-card-img {
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, #1c1c1c 0%, #111 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.5s ease;
-    }
-
-    .ed-card:hover .ed-card-img { transform: scale(1.03); }
-
-    .ed-card-img .ph-label {
-      font-family: var(--font-mono);
-      font-size: 0.55rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: #2a2a2a;
-    }
-
-    .ed-card-overlay {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      padding: 1.5rem;
-      background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, transparent 100%);
-    }
-
-    .ed-card-tag {
-      font-family: var(--font-mono);
-      font-size: 0.55rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.4rem;
-    }
-
-    .ed-card-title {
-      font-family: var(--font-display);
-      font-size: 1.6rem;
-      letter-spacing: 0.04em;
-      line-height: 1.1;
-      color: var(--white);
-    }
-
-    .ed-card:first-child .ed-card-title { font-size: 2.4rem; }
-
-    /* ── EVENTS ── */
-    .events {
-      background: #0f0f0f;
-      border-top: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .events-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      margin-bottom: 3rem;
-    }
-
-    .events-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-      background: rgba(255,255,255,0.05);
-    }
-
-    .event-row {
-      background: #0f0f0f;
-      display: grid;
-      grid-template-columns: 100px 1fr auto auto;
-      align-items: center;
-      gap: 2rem;
-      padding: 1.8rem 2rem;
-      border-left: 2px solid transparent;
-      transition: border-color 0.2s, background 0.2s;
-      cursor: pointer;
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .event-row:hover {
-      background: #141414;
-      border-left-color: var(--accent);
-    }
-
-    .event-date {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .event-date-day {
-      font-family: var(--font-display);
-      font-size: 2.4rem;
-      line-height: 1;
-      color: var(--white);
-    }
-
-    .event-date-month {
-      font-family: var(--font-mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--accent);
-    }
-
-    .event-name {
-      font-family: var(--font-display);
-      font-size: 1.5rem;
-      letter-spacing: 0.04em;
-      color: var(--white);
-      margin-bottom: 0.2rem;
-    }
-
-    .event-meta {
-      font-family: var(--font-mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--mid);
-    }
-
-    .event-type {
-      font-family: var(--font-mono);
-      font-size: 0.55rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--accent);
-      border: 1px solid rgba(200,184,154,0.3);
-      padding: 0.3rem 0.7rem;
-    }
-
-    .event-arrow {
-      color: var(--mid);
-      font-size: 1rem;
-      transition: transform 0.2s, color 0.2s;
-    }
-
-    .event-row:hover .event-arrow {
-      transform: translateX(4px);
-      color: var(--white);
-    }
-
-    /* ── PARTICIPATE ── */
-    .participate {
-      background: var(--black);
-      border-top: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .participate-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
-      background: rgba(255,255,255,0.06);
-      margin-top: 3rem;
-    }
-
-    .participate-card {
-      background: var(--black);
-      padding: 2.5rem 2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      text-decoration: none;
-      color: inherit;
-      transition: background 0.2s;
-      border-bottom: 2px solid transparent;
-    }
-
-    .participate-card:hover {
-      background: #111;
-      border-bottom-color: var(--accent);
-    }
-
-    .pc-num {
-      font-family: var(--font-mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.2em;
-      color: var(--accent);
-    }
-
-    .pc-title {
-      font-family: var(--font-display);
-      font-size: 1.8rem;
-      letter-spacing: 0.04em;
-      color: var(--white);
-      line-height: 1;
-    }
-
-    .pc-body {
-      font-size: 0.85rem;
-      font-weight: 300;
-      color: var(--mid);
-      line-height: 1.7;
-      flex: 1;
-    }
-
-    .pc-link {
-      font-family: var(--font-mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--mid);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: color 0.2s;
-    }
-
-    .participate-card:hover .pc-link { color: var(--white); }
-
-    /* ── JOIN / CONTACT ── */
-    .join {
-      background: var(--white);
-      color: var(--black);
-      text-align: center;
-      padding: 8rem 4rem;
-    }
-
-    .join .section-label {
-      justify-content: center;
-      color: rgba(0,0,0,0.35);
-    }
-
-    .join .section-label::after { display: none; }
-
-    .join .section-title {
-      color: var(--black);
-      margin: 0 auto;
-      max-width: 700px;
-    }
-
-    .join-sub {
-      font-size: 1rem;
-      font-weight: 300;
-      color: #666;
-      max-width: 500px;
-      margin: 1.5rem auto 3rem;
-      line-height: 1.9;
-    }
-
-    .join-form {
-      display: flex;
-      gap: 0;
-      max-width: 480px;
-      margin: 0 auto;
-      border: 1px solid rgba(0,0,0,0.2);
-    }
-
-    .join-input {
-      flex: 1;
-      padding: 1rem 1.2rem;
-      font-family: var(--font-body);
-      font-size: 0.9rem;
-      border: none;
-      outline: none;
-      background: var(--white);
-      color: var(--black);
-    }
-
-    .join-input::placeholder { color: #aaa; }
-
-    .join-submit {
-      font-family: var(--font-mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      background: var(--black);
-      color: var(--white);
-      border: none;
-      padding: 0 1.8rem;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .join-submit:hover { background: #333; }
-
-    .join-roles {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-      margin-top: 2rem;
-    }
-
-    .role-tag {
-      font-family: var(--font-mono);
-      font-size: 0.55rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: #888;
-      border: 1px solid rgba(0,0,0,0.12);
-      padding: 0.35rem 0.8rem;
-    }
-
-    /* ── FOOTER ── */
-    footer {
-      background: var(--black);
-      border-top: 1px solid rgba(255,255,255,0.06);
-      padding: 3rem 4rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .footer-logo {
-      font-family: var(--font-display);
-      font-size: 1.2rem;
-      letter-spacing: 0.12em;
-      color: var(--mid);
-    }
-
-    .footer-copy {
-      font-family: var(--font-mono);
-      font-size: 0.55rem;
-      letter-spacing: 0.15em;
-      color: #333;
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 1.5rem;
-      list-style: none;
-    }
-
-    .footer-links a {
-      font-family: var(--font-mono);
-      font-size: 0.55rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: #444;
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .footer-links a:hover { color: var(--mid); }
-
-    /* ── ANIMATIONS ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes ticker {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
-    }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      nav { padding: 1rem 1.5rem; }
-      .nav-links { display: none; }
-
-      .hero { grid-template-columns: 1fr; min-height: auto; }
-      .hero-left { padding: 6rem 1.5rem 3rem; }
-      .hero-right { height: 55vw; }
-
-      section { padding: 4rem 1.5rem; }
-
-      .mission { grid-template-columns: 1fr; gap: 3rem; }
-      .mission-pillars { grid-template-columns: 1fr 1fr; }
-
-      .editorial-grid {
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: auto;
-      }
-
-      .ed-card:first-child { grid-row: auto; grid-column: 1 / 3; height: 300px; }
-      .ed-card:not(:first-child) { height: 200px; }
-
-      .participate-grid { grid-template-columns: 1fr 1fr; }
-
-      .event-row { grid-template-columns: 70px 1fr; gap: 1rem; }
-      .event-type, .event-arrow { display: none; }
-
-      footer { flex-direction: column; gap: 1.5rem; text-align: center; }
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/assets/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="/assets/favicon-192x192.png" type="image/png" sizes="192x192">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" sizes="180x180">
+  <title>Model Auctions | Talent. Photography. Creative Industry.</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <!-- ── NAV ── -->
-  <nav>
-    <a href="#hero" class="nav-logo"><img src="images/ModelAuctionsLogo.png" alt="Model Auctions" /></a>
-    <ul class="nav-links">
-      <li><a href="#editorial">Editorial</a></li>
-      <li><a href="#events">Events</a></li>
-      <li><a href="#classes">Classes</a></li>
-      <li><a href="#gallery">Gallery</a></li>
-      <li><a href="#casting">Casting</a></li>
-      <li><a href="#about">About</a></li>
-    </ul>
-    <a href="#join" class="nav-cta">Join Network</a>
-  </nav>
+  <!-- ═══════════════════════════════════════════════════════
+       MASTHEAD
+  ═══════════════════════════════════════════════════════ -->
+  <header class="masthead">
+    <div class="masthead-inner">
 
-  <!-- ── HERO ── -->
-  <section class="hero" id="hero" style="padding: 0;">
-    <div class="hero-left">
-      <div class="hero-eyebrow">Houston, TX &nbsp;·&nbsp; Independent Creative Platform</div>
-      <h1 class="hero-headline">
-        Model<br/>Auctions
-        <em>Build. Collaborate. Create.</em>
-      </h1>
-      <p class="hero-body">
-        An independent ecosystem for models, photographers, artists, and creatives — 
-        built for real-world opportunity, not algorithmic approval.
-      </p>
-      <div class="hero-actions">
-        <a href="#join" class="btn-primary">Join the Network</a>
-        <a href="#events" class="btn-ghost">Upcoming Events</a>
-      </div>
-    </div>
-    <div class="hero-right">
-      <div class="hero-img-placeholder">
-        <div class="ph-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <rect x="3" y="3" width="18" height="18" rx="1"/>
-            <circle cx="8.5" cy="8.5" r="1.5"/>
-            <polyline points="21,15 16,10 5,21"/>
-          </svg>
-        </div>
-        <span class="ph-label">Hero Image / Video</span>
-      </div>
-    </div>
+      <div class="masthead-top-rule"></div>
 
-    <!-- Ticker -->
-    <div class="hero-ticker">
-      <div class="ticker-inner">
-        <span class="ticker-item"><span>—</span> Editorial Photography</span>
-        <span class="ticker-item"><span>—</span> Modeling Workshops</span>
-        <span class="ticker-item"><span>—</span> Portfolio Development</span>
-        <span class="ticker-item"><span>—</span> Creative Collaboration</span>
-        <span class="ticker-item"><span>—</span> Fashion Media</span>
-        <span class="ticker-item"><span>—</span> Casting Opportunities</span>
-        <span class="ticker-item"><span>—</span> Independent Publishing</span>
-        <span class="ticker-item"><span>—</span> Creator Events</span>
-        <!-- duplicate for seamless loop -->
-        <span class="ticker-item"><span>—</span> Editorial Photography</span>
-        <span class="ticker-item"><span>—</span> Modeling Workshops</span>
-        <span class="ticker-item"><span>—</span> Portfolio Development</span>
-        <span class="ticker-item"><span>—</span> Creative Collaboration</span>
-        <span class="ticker-item"><span>—</span> Fashion Media</span>
-        <span class="ticker-item"><span>—</span> Casting Opportunities</span>
-        <span class="ticker-item"><span>—</span> Independent Publishing</span>
-        <span class="ticker-item"><span>—</span> Creator Events</span>
+      <div class="masthead-flag">
+        <div class="masthead-flag-left">
+          <span class="masthead-est">Est. 2024</span>
+          <span class="masthead-dot">·</span>
+          <span class="masthead-loc">Houston, Texas</span>
+        </div>
+        <div class="masthead-flag-center">
+          <a href="index.html" class="masthead-logo-link">
+            <img src="assets/logo.png" alt="Model Auctions" class="masthead-logo">
+          </a>
+          <div class="masthead-wordmark">
+            <h1 class="masthead-title">Model Auctions</h1>
+            <p class="masthead-tagline">Talent&nbsp;&nbsp;·&nbsp;&nbsp;Photography&nbsp;&nbsp;·&nbsp;&nbsp;Creative Industry</p>
+          </div>
+        </div>
+        <div class="masthead-flag-right">
+          <span id="live-date" class="masthead-date"></span>
+          <span id="article-count" class="masthead-count"></span>
+        </div>
       </div>
-    </div>
-  </section>
 
-  <!-- ── MISSION ── -->
-  <section class="mission" id="about">
-    <div>
-      <div class="section-label">Our Mission</div>
-      <h2 class="section-title">No<br/>gatekeepers.<br/>Real work.</h2>
-    </div>
-    <div>
-      <div class="mission-body">
-        <p>
-          Model Auctions is a media, networking, and creative collaboration platform 
-          built to give models, photographers, artists, and brands a place to work — 
-          without waiting for permission from traditional industry structures.
-        </p>
-        <p>
-          We organize shoots, run workshops, produce editorial content, and build 
-          the kind of creative community that used to require agency access. 
-          The platform is yours.
-        </p>
+      <div class="masthead-rule-double">
+        <div class="rule-thick"></div>
+        <div class="rule-thin"></div>
       </div>
-      <div class="mission-pillars">
-        <div class="pillar">
-          <span class="pillar-num">01</span>
-          <span class="pillar-name">Network</span>
-        </div>
-        <div class="pillar">
-          <span class="pillar-num">02</span>
-          <span class="pillar-name">Collaborate</span>
-        </div>
-        <div class="pillar">
-          <span class="pillar-num">03</span>
-          <span class="pillar-name">Educate</span>
-        </div>
-        <div class="pillar">
-          <span class="pillar-num">04</span>
-          <span class="pillar-name">Publish</span>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- ── EDITORIAL ── -->
-  <section class="editorial" id="editorial">
-    <div class="editorial-header">
-      <div>
-        <div class="section-label">Latest Work</div>
-        <h2 class="section-title">Editorial</h2>
-      </div>
-      <a href="#" class="editorial-link">View all →</a>
-    </div>
-    <div class="editorial-grid">
-      <div class="ed-card">
-        <div class="ed-card-img"><span class="ph-label">Feature Image</span></div>
-        <div class="ed-card-overlay">
-          <div class="ed-card-tag">Featured Editorial</div>
-          <div class="ed-card-title">Issue 01 — Emergence</div>
-        </div>
-      </div>
-      <div class="ed-card">
-        <div class="ed-card-img"><span class="ph-label">Image</span></div>
-        <div class="ed-card-overlay">
-          <div class="ed-card-tag">Fashion</div>
-          <div class="ed-card-title">Summer Collective</div>
-        </div>
-      </div>
-      <div class="ed-card">
-        <div class="ed-card-img"><span class="ph-label">Image</span></div>
-        <div class="ed-card-overlay">
-          <div class="ed-card-tag">Backstage</div>
-          <div class="ed-card-title">Behind the Lens</div>
-        </div>
-      </div>
-      <div class="ed-card">
-        <div class="ed-card-img"><span class="ph-label">Image</span></div>
-        <div class="ed-card-overlay">
-          <div class="ed-card-tag">Interview</div>
-          <div class="ed-card-title">Voices in the Industry</div>
-        </div>
-      </div>
-      <div class="ed-card">
-        <div class="ed-card-img"><span class="ph-label">Image</span></div>
-        <div class="ed-card-overlay">
-          <div class="ed-card-tag">Portfolio</div>
-          <div class="ed-card-title">New Faces 2025</div>
-        </div>
-      </div>
-    </div>
-  </section>
+      <nav class="masthead-nav">
+        <a href="index.html" class="active">Home</a>
+        <a href="all.html">Featured</a>
+        <a href="#" class="nav-dim">Models</a>
+        <a href="#" class="nav-dim">Photographers</a>
+        <a href="#" class="nav-dim">Castings</a>
+        <a href="#" class="nav-dim">Events</a>
+        <a href="#" class="nav-dim">About</a>
+      </nav>
 
-  <!-- ── EVENTS ── -->
-  <section class="events" id="events">
-    <div class="events-header">
-      <div>
-        <div class="section-label">What's Coming</div>
-        <h2 class="section-title">Events &amp;<br/>Classes</h2>
-      </div>
-      <a href="#" class="editorial-link">Full calendar →</a>
-    </div>
-    <div class="events-list">
-
-      <a href="#" class="event-row">
-        <div class="event-date">
-          <div class="event-date-day">14</div>
-          <div class="event-date-month">Jul</div>
-        </div>
-        <div>
-          <div class="event-name">Intro to Modeling — Workshop</div>
-          <div class="event-meta">Houston, TX &nbsp;·&nbsp; 10:00 AM &nbsp;·&nbsp; 12 seats remaining</div>
-        </div>
-        <div class="event-type">Workshop</div>
-        <div class="event-arrow">→</div>
-      </a>
-
-      <a href="#" class="event-row">
-        <div class="event-date">
-          <div class="event-date-day">19</div>
-          <div class="event-date-month">Jul</div>
-        </div>
-        <div>
-          <div class="event-name">Collaborative Portfolio Shoot</div>
-          <div class="event-meta">Houston, TX &nbsp;·&nbsp; 2:00 PM &nbsp;·&nbsp; Open submission</div>
-        </div>
-        <div class="event-type">Shoot</div>
-        <div class="event-arrow">→</div>
-      </a>
-
-      <a href="#" class="event-row">
-        <div class="event-date">
-          <div class="event-date-day">26</div>
-          <div class="event-date-month">Jul</div>
-        </div>
-        <div>
-          <div class="event-name">Creator Networking Meetup</div>
-          <div class="event-meta">Houston, TX &nbsp;·&nbsp; 7:00 PM &nbsp;·&nbsp; All creatives welcome</div>
-        </div>
-        <div class="event-type">Networking</div>
-        <div class="event-arrow">→</div>
-      </a>
-
-      <a href="#" class="event-row">
-        <div class="event-date">
-          <div class="event-date-day">04</div>
-          <div class="event-date-month">Aug</div>
-        </div>
-        <div>
-          <div class="event-name">Photography for Beginners</div>
-          <div class="event-meta">Houston, TX &nbsp;·&nbsp; 11:00 AM &nbsp;·&nbsp; Equipment provided</div>
-        </div>
-        <div class="event-type">Class</div>
-        <div class="event-arrow">→</div>
-      </a>
+      <div class="masthead-bottom-rule"></div>
 
     </div>
-  </section>
+  </header>
 
-  <!-- ── PARTICIPATE ── -->
-  <section class="participate" id="casting">
-    <div class="section-label">Get Involved</div>
-    <h2 class="section-title">How to<br/>Participate</h2>
-    <div class="participate-grid">
-      <a href="#join" class="participate-card">
-        <span class="pc-num">01</span>
-        <div class="pc-title">Join the Network</div>
-        <p class="pc-body">Submit your info and creative interests to become part of the Model Auctions collaborator database.</p>
-        <span class="pc-link">Submit profile →</span>
-      </a>
-      <a href="#events" class="participate-card">
-        <span class="pc-num">02</span>
-        <div class="pc-title">Attend Events</div>
-        <p class="pc-body">Show up to workshops, group shoots, networking meetups, and classes. Build real-world experience.</p>
-        <span class="pc-link">View calendar →</span>
-      </a>
-      <a href="#" class="participate-card">
-        <span class="pc-num">03</span>
-        <div class="pc-title">Collaborate</div>
-        <p class="pc-body">Apply to join editorial projects, casting calls, and creative collaborations as they open up.</p>
-        <span class="pc-link">Open castings →</span>
-      </a>
-      <a href="#editorial" class="participate-card">
-        <span class="pc-num">04</span>
-        <div class="pc-title">Submit Work</div>
-        <p class="pc-body">Photographers, models, and stylists can submit work for consideration in our editorial and magazine projects.</p>
-        <span class="pc-link">Submission info →</span>
+  <!-- ═══════════════════════════════════════════════════════
+       MAIN CONTENT
+  ═══════════════════════════════════════════════════════ -->
+  <main>
+
+    <section id="latest" class="top-stories">
+      <div class="section-label-bar">
+        <span class="section-label">Featured Talent</span>
+        <span class="section-label-sub">Profiles, Castings &amp; Creative Features</span>
+      </div>
+
+      <div class="cards-grid" id="cards-grid">
+        <!-- Skeleton loaders -->
+        <div class="card skeleton"></div>
+        <div class="card skeleton"></div>
+        <div class="card skeleton"></div>
+      </div>
+    </section>
+
+    <div class="all-articles-cta">
+      <a href="all.html" class="cta-button">
+        <span>Browse All Features</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12,5 19,12 12,19"/>
+        </svg>
       </a>
     </div>
-  </section>
 
-  <!-- ── JOIN ── -->
-  <section class="join" id="join">
-    <div class="section-label">Join the Community</div>
-    <h2 class="section-title">Ready to<br/>build something?</h2>
-    <p class="join-sub">
-      Drop your email to stay in the loop on events, castings, and new opportunities. 
-      No algorithm required.
-    </p>
-    <div class="join-form">
-      <input class="join-input" type="email" placeholder="your@email.com" />
-      <button class="join-submit">Join</button>
-    </div>
-    <div class="join-roles">
-      <span class="role-tag">Model</span>
-      <span class="role-tag">Photographer</span>
-      <span class="role-tag">Makeup Artist</span>
-      <span class="role-tag">Stylist</span>
-      <span class="role-tag">Designer</span>
-      <span class="role-tag">Videographer</span>
-      <span class="role-tag">Brand</span>
-      <span class="role-tag">Creative</span>
-    </div>
-  </section>
+  </main>
 
-  <!-- ── FOOTER ── -->
-  <footer>
-    <div class="footer-logo">ModelAuctions</div>
-    <ul class="footer-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#editorial">Editorial</a></li>
-      <li><a href="#events">Events</a></li>
-      <li><a href="#casting">Casting</a></li>
-      <li><a href="#join">Contact</a></li>
-    </ul>
-    <div class="footer-copy">© 2025 Model Auctions. All rights reserved.</div>
+  <!-- ═══════════════════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════════════════ -->
+  <footer class="site-footer">
+    <div class="footer-rule"></div>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="assets/logo.png" alt="Model Auctions" class="footer-logo">
+        <span class="footer-wordmark">Model Auctions</span>
+      </div>
+      <p class="footer-mission">Curated talent directory and creative industry platform. Profiles, castings, and features for models, photographers, and collaborators.</p>
+      <p class="footer-parent">A <a href="https://cadenzaarthouse.com" target="_blank">Cadenza Arthouse</a> property&nbsp;&nbsp;·&nbsp;&nbsp;Est. 2024, Houston, Texas</p>
+      <p class="footer-legal">Self-hosted. No trackers. Just work.&nbsp;&nbsp;·&nbsp;&nbsp;© 2026 Model Auctions. All Rights Reserved.</p>
+    </div>
   </footer>
+
+  <!-- ═══════════════════════════════════════════════════════
+       JAVASCRIPT
+  ═══════════════════════════════════════════════════════ -->
+  <script>
+    // ============================================================
+    // CONFIGURATION
+    // ============================================================
+    const GITHUB_USER = 'fmohod';
+    const GITHUB_REPO = 'Modelauctions-site';
+    // ============================================================
+
+    const BASE_URL    = 'https://modelauctions.net';
+    const API_BASE    = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/`;
+    const PLACEHOLDER = `${BASE_URL}/assets/placeholder.jpg`;
+
+    // Live date in masthead
+    document.getElementById('live-date').textContent =
+      new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+    async function getArticleFolders() {
+      const res = await fetch(API_BASE);
+      if (!res.ok) throw new Error('GitHub API fetch failed');
+      const contents = await res.json();
+      return contents
+        .filter(f => f.type === 'dir' && /^\d{4}$/.test(f.name))
+        .sort((a, b) => b.name.localeCompare(a.name));
+    }
+
+    async function getArticleMeta(folder) {
+      const url = `${BASE_URL}/${folder}/`;
+      try {
+        const res  = await fetch(url);
+        const html = await res.text();
+        const doc  = new DOMParser().parseFromString(html, 'text/html');
+
+        const title = doc.querySelector('title')?.textContent?.trim()
+                   || doc.querySelector('h1')?.textContent?.trim()
+                   || `Feature ${folder}`;
+        const desc  = doc.querySelector('meta[name="description"]')?.content
+                   || doc.querySelector('p')?.textContent?.trim().slice(0, 140) + '…'
+                   || '';
+        const date  = doc.querySelector('meta[name="date"]')?.content || '';
+
+        // Thumb: check jpg → png → fall back to placeholder
+        let thumb = PLACEHOLDER;
+        try {
+          const tj = await fetch(`${BASE_URL}/${folder}/thumb.jpg`, { method: 'HEAD' });
+          if (tj.ok) { thumb = `${BASE_URL}/${folder}/thumb.jpg`; }
+        } catch {}
+        if (thumb === PLACEHOLDER) {
+          try {
+            const tp = await fetch(`${BASE_URL}/${folder}/thumb.png`, { method: 'HEAD' });
+            if (tp.ok) { thumb = `${BASE_URL}/${folder}/thumb.png`; }
+          } catch {}
+        }
+
+        return { folder, title, desc, date, thumb, url };
+      } catch {
+        return { folder, title: `Feature ${folder}`, desc: '', date: '', thumb: PLACEHOLDER, url: `${BASE_URL}/${folder}/` };
+      }
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return '';
+      try {
+        return new Date(dateStr + 'T00:00:00').toLocaleDateString('en-US',
+          { year: 'numeric', month: 'long', day: 'numeric' });
+      } catch { return dateStr; }
+    }
+
+    const CARD_LABELS = ['Featured', 'New Talent', 'Casting Call'];
+
+    function renderCard(meta, index) {
+      return `
+        <article class="card card-${index + 1}" style="animation-delay:${index * 0.12}s">
+          <a href="${meta.url}" class="card-image-link">
+            <div class="card-image">
+              <img src="${meta.thumb}" alt="${meta.title}" loading="lazy">
+              <div class="card-label">${CARD_LABELS[index] || 'Featured'}</div>
+            </div>
+          </a>
+          <div class="card-body">
+            ${meta.date ? `<time>${formatDate(meta.date)}</time>` : ''}
+            <h2><a href="${meta.url}">${meta.title}</a></h2>
+            ${meta.desc ? `<p>${meta.desc}</p>` : ''}
+            <a href="${meta.url}" class="read-link">View Profile →</a>
+          </div>
+        </article>`;
+    }
+
+    async function init() {
+      const grid = document.getElementById('cards-grid');
+      try {
+        const folders = await getArticleFolders();
+        document.getElementById('article-count').textContent =
+          `${folders.length} feature${folders.length !== 1 ? 's' : ''} published`;
+
+        const top3  = folders.slice(0, 3);
+        const metas = await Promise.all(top3.map(f => getArticleMeta(f.name)));
+        grid.innerHTML = metas.map((m, i) => renderCard(m, i)).join('');
+
+        localStorage.setItem('modelauctions_folders', JSON.stringify(folders.map(f => f.name)));
+      } catch (err) {
+        grid.innerHTML = `
+          <div class="error-state">
+            <p>⚠ Could not load features.</p>
+            <p class="error-detail">Make sure GITHUB_USER and GITHUB_REPO are set correctly in index.html, and that GitHub Pages is enabled on your repo.</p>
+          </div>`;
+        document.getElementById('article-count').textContent = 'Config needed';
+        console.error(err);
+      }
+    }
+
+    init();
+  </script>
 
 </body>
 </html>
