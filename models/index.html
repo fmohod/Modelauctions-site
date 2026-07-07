@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Apply to become a model with Model Auctions — Houston's curated talent and photography network.">
+  <link rel="icon" href="../assets/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="../assets/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="../assets/favicon-192x192.png" type="image/png" sizes="192x192">
+  <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" sizes="180x180">
+  <title>Become a Model | Model Auctions</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════
+       MASTHEAD
+  ═══════════════════════════════════════════════════════ -->
+  <header class="masthead">
+    <div class="masthead-inner">
+
+      <div class="masthead-top-rule"></div>
+
+      <div class="masthead-flag">
+        <div class="masthead-flag-left">
+          <span class="masthead-est">Est. 2022</span>
+          <span class="masthead-dot">·</span>
+          <span class="masthead-loc">Houston, Texas</span>
+        </div>
+        <div class="masthead-flag-center">
+          <a href="../index.html" class="masthead-logo-link">
+            <img src="../assets/logo.png" alt="Model Auctions" class="masthead-logo">
+          </a>
+          <div class="masthead-wordmark">
+            <h1 class="masthead-title"><a href="../index.html">Model Auctions</a></h1>
+            <p class="masthead-tagline">Talent&nbsp;&nbsp;·&nbsp;&nbsp;Photography&nbsp;&nbsp;·&nbsp;&nbsp;Creative Industry</p>
+          </div>
+        </div>
+        <div class="masthead-flag-right">
+          <span id="live-date" class="masthead-date"></span>
+        </div>
+      </div>
+
+      <div class="masthead-rule-double">
+        <div class="rule-thick"></div>
+        <div class="rule-thin"></div>
+      </div>
+
+      <nav class="masthead-nav">
+        <a href="../index.html">Home</a>
+        <a href="../all.html">Featured</a>
+        <a href="../models/index.html" class="active">Models</a>
+        <a href="../photographers/index.html">Photographers</a>
+        <a href="#" class="nav-dim">Castings</a>
+        <a href="#" class="nav-dim">Events</a>
+        <a href="#" class="nav-dim">About</a>
+      </nav>
+
+      <div class="masthead-bottom-rule"></div>
+
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════
+       APPLICATION FORM
+  ═══════════════════════════════════════════════════════ -->
+  <main class="article-body">
+    <div class="form-wrap">
+      <p class="article-kicker">Application</p>
+      <h1 class="masthead-title" style="text-align:left; font-size: 2.2rem; margin-bottom: 18px;">Become a Model</h1>
+      <p class="form-intro">
+        Tell us about yourself. A Model Auctions team member reviews every submission and follows up by email —
+        there's no account to create and nothing to install.
+      </p>
+
+      <!--
+        Web3Forms — access key created 2026-07-06 specifically for Model Auctions,
+        routed to info@modelauctions.net. Same key is reused by
+        /photographers/index.html and (once built) the CAIN kiosk's native Form
+        module — see betatest/deployments/fashion-show/deployment.json → forms.model.
+        One key works across any number of pages; it's the `access_key` value that
+        routes mail, not the form action URL, which is always the same.
+      -->
+      <form action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="dd5e7f84-83b0-49be-842e-94320ef6046b">
+        <input type="hidden" name="subject" value="New Model Auctions application — Become a Model">
+        <input type="hidden" name="from_name" value="Model Auctions Website">
+        <input type="hidden" name="redirect" value="https://modelauctions.net/thank-you/index.html">
+        <input type="checkbox" name="botcheck" style="display:none;" tabindex="-1" autocomplete="off">
+
+        <div class="form-fieldset">
+          <div class="form-field">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" required autocomplete="name">
+          </div>
+
+          <div class="form-field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required autocomplete="email">
+          </div>
+
+          <div class="form-field">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" required autocomplete="tel">
+          </div>
+
+          <div class="form-field">
+            <label for="instagram">Instagram Handle</label>
+            <input type="text" id="instagram" name="instagram" placeholder="@yourhandle">
+          </div>
+
+          <div class="form-field">
+            <label for="measurements">Measurements</label>
+            <span class="field-hint">Height, and any others you'd like to share — whatever you're comfortable listing.</span>
+            <textarea id="measurements" name="measurements"></textarea>
+          </div>
+
+          <div class="form-field">
+            <label for="photoLink">Photo Link</label>
+            <span class="field-hint">A link to one current, unedited photo — Instagram, Google Drive, Dropbox, whatever's easiest. (Direct uploads need a paid Web3Forms plan; this works today.)</span>
+            <input type="url" id="photoLink" name="photoLink" placeholder="https://">
+          </div>
+        </div>
+
+        <label class="form-consent">
+          <input type="checkbox" name="age_consent" required>
+          <span>
+            I confirm I am 18 years of age or older, or that a parent/guardian is submitting this application
+            on my behalf, and I agree to the
+            <a href="../privacy-policy/index.html">Terms of Use</a>.
+          </span>
+        </label>
+
+        <button type="submit" class="form-submit">Submit Application</button>
+      </form>
+    </div>
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════════════════ -->
+  <footer class="site-footer">
+    <div class="footer-rule"></div>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="../assets/logo.png" alt="Model Auctions" class="footer-logo">
+        <span class="footer-wordmark">Model Auctions</span>
+      </div>
+      <p class="footer-mission">Curated talent directory and creative industry platform. Profiles, castings, and features for models, photographers, and collaborators.</p>
+      <p class="footer-parent">A <a href="https://cadenzaarthouse.com" target="_blank">Cadenza Arthouse</a> property&nbsp;&nbsp;·&nbsp;&nbsp;Est. 2024, Houston, Texas</p>
+      <p class="footer-legal">Self-hosted. No trackers. Just work.&nbsp;&nbsp;·&nbsp;&nbsp;© 2026 Model Auctions. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('live-date').textContent =
+      new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  </script>
+
+</body>
+</html>

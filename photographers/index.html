@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Hire a photographer through Model Auctions — Houston's curated talent and photography network.">
+  <link rel="icon" href="../assets/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="../assets/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="../assets/favicon-192x192.png" type="image/png" sizes="192x192">
+  <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" sizes="180x180">
+  <title>Hire Photography | Model Auctions</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════
+       MASTHEAD
+  ═══════════════════════════════════════════════════════ -->
+  <header class="masthead">
+    <div class="masthead-inner">
+
+      <div class="masthead-top-rule"></div>
+
+      <div class="masthead-flag">
+        <div class="masthead-flag-left">
+          <span class="masthead-est">Est. 2022</span>
+          <span class="masthead-dot">·</span>
+          <span class="masthead-loc">Houston, Texas</span>
+        </div>
+        <div class="masthead-flag-center">
+          <a href="../index.html" class="masthead-logo-link">
+            <img src="../assets/logo.png" alt="Model Auctions" class="masthead-logo">
+          </a>
+          <div class="masthead-wordmark">
+            <h1 class="masthead-title"><a href="../index.html">Model Auctions</a></h1>
+            <p class="masthead-tagline">Talent&nbsp;&nbsp;·&nbsp;&nbsp;Photography&nbsp;&nbsp;·&nbsp;&nbsp;Creative Industry</p>
+          </div>
+        </div>
+        <div class="masthead-flag-right">
+          <span id="live-date" class="masthead-date"></span>
+        </div>
+      </div>
+
+      <div class="masthead-rule-double">
+        <div class="rule-thick"></div>
+        <div class="rule-thin"></div>
+      </div>
+
+      <nav class="masthead-nav">
+        <a href="../index.html">Home</a>
+        <a href="../all.html">Featured</a>
+        <a href="../models/index.html">Models</a>
+        <a href="../photographers/index.html" class="active">Photographers</a>
+        <a href="#" class="nav-dim">Castings</a>
+        <a href="#" class="nav-dim">Events</a>
+        <a href="#" class="nav-dim">About</a>
+      </nav>
+
+      <div class="masthead-bottom-rule"></div>
+
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════
+       INQUIRY FORM
+  ═══════════════════════════════════════════════════════ -->
+  <main class="article-body">
+    <div class="form-wrap">
+      <p class="article-kicker">Booking Inquiry</p>
+      <h1 class="masthead-title" style="text-align:left; font-size: 2.2rem; margin-bottom: 18px;">Hire Photography</h1>
+      <p class="form-intro">
+        Looking for a photographer for a shoot, event, or campaign? Tell us what you need and we'll match you
+        with someone from the network.
+      </p>
+
+      <!--
+        Web3Forms — same access key as /models/index.html, routed to
+        info@modelauctions.net. One key, reused across pages; the `subject`
+        field below is what tells the two forms apart in the inbox. Mirrors
+        betatest/deployments/fashion-show/deployment.json → forms.photographer.
+      -->
+      <form action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="dd5e7f84-83b0-49be-842e-94320ef6046b">
+        <input type="hidden" name="subject" value="New Model Auctions inquiry — Hire Photography">
+        <input type="hidden" name="from_name" value="Model Auctions Website">
+        <input type="hidden" name="redirect" value="https://modelauctions.net/thank-you/index.html">
+        <input type="checkbox" name="botcheck" style="display:none;" tabindex="-1" autocomplete="off">
+
+        <div class="form-fieldset">
+          <div class="form-field">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" required autocomplete="name">
+          </div>
+
+          <div class="form-field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required autocomplete="email">
+          </div>
+
+          <div class="form-field">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" required autocomplete="tel">
+          </div>
+
+          <div class="form-field">
+            <label for="portfolioUrl">Your Portfolio or Project Reference</label>
+            <span class="field-hint">A link to your site, Instagram, or a reference for what you're planning.</span>
+            <input type="url" id="portfolioUrl" name="portfolioUrl" placeholder="https://">
+          </div>
+
+          <div class="form-field">
+            <label for="dateNeeded">Date Needed</label>
+            <input type="date" id="dateNeeded" name="dateNeeded" required>
+          </div>
+        </div>
+
+        <label class="form-consent">
+          <input type="checkbox" name="terms_consent" required>
+          <span>
+            I agree to be contacted about this inquiry and to the
+            <a href="../privacy-policy/index.html">Terms of Use</a>.
+          </span>
+        </label>
+
+        <button type="submit" class="form-submit">Send Inquiry</button>
+      </form>
+    </div>
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════════════════ -->
+  <footer class="site-footer">
+    <div class="footer-rule"></div>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="../assets/logo.png" alt="Model Auctions" class="footer-logo">
+        <span class="footer-wordmark">Model Auctions</span>
+      </div>
+      <p class="footer-mission">Curated talent directory and creative industry platform. Profiles, castings, and features for models, photographers, and collaborators.</p>
+      <p class="footer-parent">A <a href="https://cadenzaarthouse.com" target="_blank">Cadenza Arthouse</a> property&nbsp;&nbsp;·&nbsp;&nbsp;Est. 2024, Houston, Texas</p>
+      <p class="footer-legal">Self-hosted. No trackers. Just work.&nbsp;&nbsp;·&nbsp;&nbsp;© 2026 Model Auctions. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('live-date').textContent =
+      new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  </script>
+
+</body>
+</html>

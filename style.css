@@ -679,3 +679,157 @@ main {
   .card, .list-item { animation: none; opacity: 1; }
   .card.skeleton, .list-skeleton { animation: none; }
 }
+
+
+/* ── FORM PAGES (Models / Photographers / Join) ──────────────
+   Shared by /models/, /photographers/, /join/. Reuses the same
+   masthead/footer chrome and article-wrap type scale as the rest
+   of the site so these feel like site pages, not a bolted-on tool. */
+.form-wrap {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+.form-intro {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #C8C4BC;
+  margin-bottom: 36px;
+}
+
+.form-fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  margin-bottom: 8px;
+}
+
+.form-field { display: flex; flex-direction: column; gap: 8px; }
+
+.form-field label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #C49A3C;
+}
+
+.form-field .field-hint {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.62rem;
+  color: #666;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+.form-field input[type="text"],
+.form-field input[type="email"],
+.form-field input[type="tel"],
+.form-field input[type="url"],
+.form-field input[type="date"],
+.form-field textarea {
+  width: 100%;
+  background: #141414;
+  border: 1px solid #2A2A2A;
+  color: #F0EDE6;
+  font-family: 'Libre Baskerville', serif;
+  font-size: 0.95rem;
+  padding: 12px 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-field input:focus,
+.form-field textarea:focus { border-color: #C49A3C; }
+
+.form-field input::placeholder,
+.form-field textarea::placeholder { color: #555; font-style: italic; }
+
+.form-field textarea { resize: vertical; min-height: 90px; }
+
+/* file inputs render with the browser's own chrome; just theme the text */
+.form-field input[type="file"] {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.form-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 28px 0;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: #888;
+}
+
+.form-consent input[type="checkbox"] {
+  margin-top: 4px;
+  accent-color: #C49A3C;
+}
+
+.form-consent a { color: #C49A3C; }
+.form-consent a:hover { color: #F0EDE6; }
+
+.form-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #0D0D0D;
+  background: #C49A3C;
+  border: 1.5px solid #C49A3C;
+  padding: 13px 30px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.form-submit:hover { background: #F0EDE6; border-color: #F0EDE6; }
+
+/* ── JOIN HUB (QR landing) ───────────────────────────────────── */
+.join-hero { text-align: center; margin-bottom: 44px; }
+
+.join-hero h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.4rem;
+  letter-spacing: 0.1em;
+  color: #F0EDE6;
+  margin-bottom: 10px;
+}
+
+.join-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+
+@media (max-width: 560px) { .join-cards { grid-template-columns: 1fr; } }
+
+.join-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #141414;
+  border: 1px solid #2A2A2A;
+  padding: 28px 24px;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+
+.join-card:hover { border-color: #C49A3C; }
+
+.join-card h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 0.08em;
+  color: #F0EDE6;
+}
+
+.join-card p { font-size: 0.85rem; color: #888; line-height: 1.55; }
+
+.join-card .cta-button { align-self: center; margin-top: 6px; }
