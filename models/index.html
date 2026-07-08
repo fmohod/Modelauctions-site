@@ -249,6 +249,11 @@
         button.textContent = 'Sending application…';
         const emailData = new FormData(form);
         emailData.delete('photos'); // Web3Forms' free plan doesn't take attachments — R2 already has them.
+        // Turnstile injects this hidden field into the form automatically.
+        // It's already verified server-side by the upload Worker — Web3Forms
+        // seeing it triggers their own (paid) Turnstile integration and
+        // rejects the submission. Strip it before it ever leaves the browser.
+        emailData.delete('cf-turnstile-response');
 
         const emailRes = await fetch(form.action, {
           method: 'POST',
