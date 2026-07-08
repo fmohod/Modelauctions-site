@@ -136,7 +136,7 @@
           </div>
 
           <div class="form-field">
-            <div class="cf-turnstile" data-sitekey="0x4AAAAAADyH2lWTrqxEz6dz" data-theme="dark"></div>
+            <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITE_KEY" data-theme="dark"></div>
           </div>
         </div>
 
@@ -184,7 +184,7 @@
   ═══════════════════════════════════════════════════════ -->
   <script>
   (function () {
-    const WORKER_URL = "https://cadenza-upload.fmohod.workers.dev";
+    const WORKER_URL = "https://YOUR-WORKER-SUBDOMAIN.workers.dev";
 
     const form           = document.getElementById('ma-form');
     const status         = document.getElementById('ma-status');
