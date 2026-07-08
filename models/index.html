@@ -240,15 +240,7 @@
         const uploadResult = await uploadRes.json().catch(() => ({}));
 
         if (!uploadRes.ok || !uploadResult.ok) {
-          // TEMP DIAGNOSTIC: surface fieldsReceived/rawPhotos (if present) so
-          // we can see exactly what the Worker got, instead of guessing blind.
-          let extra = uploadResult.fieldsReceived
-            ? ' [fields received: ' + uploadResult.fieldsReceived.join(', ') + ']'
-            : '';
-          if (uploadResult.rawPhotos) {
-            extra += ' [photos: ' + JSON.stringify(uploadResult.rawPhotos) + ']';
-          }
-          throw new Error((uploadResult.error || 'Could not upload your photos. Please try again.') + extra);
+          throw new Error(uploadResult.error || 'Could not upload your photos. Please try again.');
         }
 
         submissionField.value = uploadResult.id;
