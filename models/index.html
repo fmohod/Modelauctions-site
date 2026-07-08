@@ -258,7 +258,13 @@
         const emailResult = await emailRes.json().catch(() => ({}));
 
         if (!emailRes.ok || emailResult.success === false) {
-          throw new Error('Photos were received, but the notification email failed. We\'ll still see your submission.');
+          // TEMP DIAGNOSTIC: surface Web3Forms' actual response instead of a
+          // generic message, so we can see exactly why it rejected the
+          // request (bad/expired key, domain restriction, quota, etc.).
+          // Safe to leave in — it only fires when this step fails, and it
+          // exposes no secrets a browser dev-tools user couldn't already see.
+          const detail = emailResult.message || `HTTP ${emailRes.status}`;
+          throw new Error('Photos were received, but the notification email failed: ' + detail);
         }
 
         window.location.href = '../thank-you/index.html?ref=' + encodeURIComponent(uploadResult.id);
