@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="../style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
 
@@ -76,19 +77,30 @@
       </p>
 
       <!--
-        Web3Forms — access key created 2026-07-06 specifically for Model Auctions,
-        routed to info@modelauctions.net. Same key is reused by
-        /photographers/index.html and (once built) the CAIN kiosk's native Form
-        module — see betatest/deployments/fashion-show/deployment.json → forms.model.
-        One key works across any number of pages; it's the `access_key` value that
-        routes mail, not the form action URL, which is always the same.
+        Two systems working together, on submit:
+          1. Photos go to Cloudflare R2 via the shared cadenza-upload Worker
+             (see /upload-worker.js in the site's dev notes) — Turnstile-gated,
+             stored under applications/models/SUB-.../, never in this repo.
+          2. Structured fields (name/email/phone/etc.) still go to Web3Forms —
+             access key created 2026-07-06 specifically for Model Auctions,
+             routed to info@modelauctions.net. Same key is reused by
+             /photographers/index.html and (once built) the CAIN kiosk's native
+             Form module. The email now also carries the R2 submission ID so
+             a photo set and its application always cross-reference cleanly.
+        JS below runs both steps in sequence, then redirects to /thank-you/.
       -->
-      <form action="https://api.web3forms.com/submit" method="POST">
+      <form id="ma-form" action="https://api.web3forms.com/submit" method="POST">
         <input type="hidden" name="access_key" value="dd5e7f84-83b0-49be-842e-94320ef6046b">
         <input type="hidden" name="subject" value="New Model Auctions application — Become a Model">
         <input type="hidden" name="from_name" value="Model Auctions Website">
-        <input type="hidden" name="redirect" value="https://modelauctions.net/thank-you/index.html">
         <input type="checkbox" name="botcheck" style="display:none;" tabindex="-1" autocomplete="off">
+
+        <!-- Which R2 upload-worker prefix this submission uses. -->
+        <input type="hidden" name="type" value="model">
+        <!-- Populated by JS with any ?event=, ?card=, ?campaign=, ?ui= the visitor arrived with. -->
+        <input type="hidden" name="_context" id="ma-context" value="{}">
+        <!-- Filled in with the R2 submission ID after the photo upload succeeds. -->
+        <input type="hidden" name="submission_id" id="ma-submission-id" value="">
 
         <div class="form-fieldset">
           <div class="form-field">
@@ -118,9 +130,13 @@
           </div>
 
           <div class="form-field">
-            <label for="photoLink">Photo Link</label>
-            <span class="field-hint">A link to one current, unedited photo — Instagram, Google Drive, Dropbox, whatever's easiest. (Direct uploads need a paid Web3Forms plan; this works today.)</span>
-            <input type="url" id="photoLink" name="photoLink" placeholder="https://">
+            <label for="photos">Photos</label>
+            <span class="field-hint">Up to 8 photos (JPG, PNG, WEBP, or HEIC), 15MB each.</span>
+            <input type="file" id="photos" name="photos" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" multiple required>
+          </div>
+
+          <div class="form-field">
+            <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITE_KEY" data-theme="dark"></div>
           </div>
         </div>
 
@@ -134,6 +150,7 @@
         </label>
 
         <button type="submit" class="form-submit">Submit Application</button>
+        <div class="form-status" id="ma-status" role="status"></div>
       </form>
     </div>
   </main>
@@ -157,6 +174,102 @@
   <script>
     document.getElementById('live-date').textContent =
       new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  </script>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SUBMISSION: R2 upload → Web3Forms email → redirect
+       Update WORKER_URL once the upload-worker is deployed
+       (see R2_SETUP_GUIDE.md). Turnstile site key lives on the
+       .cf-turnstile div above.
+  ═══════════════════════════════════════════════════════ -->
+  <script>
+  (function () {
+    const WORKER_URL = "https://YOUR-WORKER-SUBDOMAIN.workers.dev";
+
+    const form           = document.getElementById('ma-form');
+    const status         = document.getElementById('ma-status');
+    const contextField   = document.getElementById('ma-context');
+    const submissionField = document.getElementById('ma-submission-id');
+    if (!form) return;
+
+    // Capture every query-string param the visitor arrived with (?event=,
+    // ?card=, ?campaign=, ?ui=, or anything future QR codes add) so it rides
+    // along in both the R2 info.json and the Web3Forms email.
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const context = {};
+      for (const [key, value] of params.entries()) context[key] = value;
+      context.referrer = document.referrer || null;
+      contextField.value = JSON.stringify(context);
+    } catch (err) {
+      contextField.value = "{}";
+    }
+
+    function setStatus(message, kind) {
+      status.textContent = message;
+      status.className = 'form-status' + (kind ? ' form-status-' + kind : '');
+    }
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      // Bots that fill every field trip this before anything else runs.
+      if (form.elements.botcheck && form.elements.botcheck.checked) return;
+
+      const button = form.querySelector('.form-submit');
+      const originalLabel = button.textContent;
+      button.disabled = true;
+      button.textContent = 'Uploading photos…';
+      setStatus('', '');
+
+      try {
+        // ---- Step 1: photos + contact fields → R2 via the upload Worker ----
+        const uploadData = new FormData();
+        uploadData.append('type', form.elements.type.value);
+        uploadData.append('name', form.elements.name.value);
+        uploadData.append('email', form.elements.email.value);
+        uploadData.append('social', form.elements.instagram.value);
+        uploadData.append('notes', form.elements.measurements.value);
+        uploadData.append('_context', contextField.value);
+        if (form.elements.botcheck) uploadData.append('botcheck', form.elements.botcheck.checked ? 'on' : '');
+        const turnstileResponse = form.querySelector('[name="cf-turnstile-response"]');
+        uploadData.append('cf-turnstile-response', turnstileResponse ? turnstileResponse.value : '');
+        for (const file of form.elements.photos.files) uploadData.append('photos', file);
+
+        const uploadRes = await fetch(WORKER_URL, { method: 'POST', body: uploadData });
+        const uploadResult = await uploadRes.json().catch(() => ({}));
+
+        if (!uploadRes.ok || !uploadResult.ok) {
+          throw new Error(uploadResult.error || 'Could not upload your photos. Please try again.');
+        }
+
+        submissionField.value = uploadResult.id;
+
+        // ---- Step 2: structured fields → Web3Forms (email to the team) ----
+        button.textContent = 'Sending application…';
+        const emailData = new FormData(form);
+        emailData.delete('photos'); // Web3Forms' free plan doesn't take attachments — R2 already has them.
+
+        const emailRes = await fetch(form.action, {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: emailData,
+        });
+        const emailResult = await emailRes.json().catch(() => ({}));
+
+        if (!emailRes.ok || emailResult.success === false) {
+          throw new Error('Photos were received, but the notification email failed. We\'ll still see your submission.');
+        }
+
+        window.location.href = '../thank-you/index.html?ref=' + encodeURIComponent(uploadResult.id);
+      } catch (err) {
+        setStatus(err.message || 'Something went wrong. Please try again.', 'error');
+        button.disabled = false;
+        button.textContent = originalLabel;
+        if (window.turnstile) window.turnstile.reset();
+      }
+    });
+  })();
   </script>
 
 </body>

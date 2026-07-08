@@ -833,3 +833,19 @@ main {
 .join-card p { font-size: 0.85rem; color: #888; line-height: 1.55; }
 
 .join-card .cta-button { align-self: center; margin-top: 6px; }
+
+
+/* ── FORM STATUS / RECEIPT (Models, Photographers uploads) ──── */
+.form-submit:disabled { opacity: 0.5; cursor: default; }
+
+.form-status {
+  margin-top: 18px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  color: #888;
+}
+
+.form-status:empty { margin-top: 0; }
+
+.form-status-error { color: #d16a6a; }
