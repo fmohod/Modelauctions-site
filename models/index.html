@@ -240,7 +240,12 @@
         const uploadResult = await uploadRes.json().catch(() => ({}));
 
         if (!uploadRes.ok || !uploadResult.ok) {
-          throw new Error(uploadResult.error || 'Could not upload your photos. Please try again.');
+          // TEMP DIAGNOSTIC: surface fieldsReceived (if present) so we can see
+          // exactly what the Worker got, instead of guessing blind.
+          const extra = uploadResult.fieldsReceived
+            ? ' [fields received: ' + uploadResult.fieldsReceived.join(', ') + ']'
+            : '';
+          throw new Error((uploadResult.error || 'Could not upload your photos. Please try again.') + extra);
         }
 
         submissionField.value = uploadResult.id;
