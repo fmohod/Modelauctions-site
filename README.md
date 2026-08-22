@@ -21,7 +21,7 @@ the Cadenza Arthouse group.
 **`INTAKE.md` is the contract for everything under `models/` and `photographers/`.**
 
 That site collects a named person's photographs, phone number, social handle and body
-measurements — the most sensitive data anywhere in the Cadenza ecosystem. The application
+measurements — the most sensitive data anywhere in the Cadenza Arthouse ecosystem. The application
 form is not an ordinary contact form and must not be edited like one. In particular:
 
 - the submit handler is **two calls, not one** (R2 upload, then notification email), and

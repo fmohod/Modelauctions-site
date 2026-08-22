@@ -4,7 +4,7 @@
 handlers, not from memory. Open questions and freeze criteria at the bottom.
 
 This document exists because `modelauctions.net` collects **the most sensitive data in the
-Cadenza ecosystem** — a named person's photographs, phone number, social handle and body
+Cadenza Arthouse ecosystem** — a named person's photographs, phone number, social handle and body
 measurements — and until today nothing about that was written down anywhere. CAMT already
 knew to be careful (`EMAIL_INTAKE.md` routes this address at the strictest level); the site
 side had no counterpart.
