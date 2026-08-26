@@ -1,7 +1,7 @@
 # CLAUDE.md — Model Auctions site
 
 Static site (GitHub Pages, no build step) at modelauctions.net. Part of the Cadenza Arthouse
-Arthouse group. Vanilla HTML/CSS/JS — keep it that way unless explicitly asked.
+group. Vanilla HTML/CSS/JS — keep it that way unless explicitly asked.
 
 ## The one rule that matters here
 
