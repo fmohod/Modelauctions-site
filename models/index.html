@@ -132,7 +132,9 @@
           <div class="form-field">
             <label for="photos">Photos</label>
             <span class="field-hint">Up to 8 photos (JPG, PNG, WEBP, or HEIC), 15MB each.</span>
-            <input type="file" id="photos" name="photos" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" multiple required>
+            <!-- DISABLED until the 18+ box is ticked. See the consent block below. -->
+            <input type="file" id="photos" name="photos" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" multiple required disabled>
+            <p class="form-hint" id="photos-locked">Confirm you are 18 or older, below, before choosing photos.</p>
           </div>
 
           <div class="form-field">
@@ -140,11 +142,21 @@
           </div>
         </div>
 
+        <!-- OWNER RULING 2026-08-31 (Attention Desk, modelauctions-minor-consent):
+             "no minor better submit photos ... if that box is not checked I don't
+             want them to even be able to submit the photo ... And no parents
+             submitting pictures of their kids because I just don't have the
+             capacity or anything to deal with kids and model auctions right now."
+
+             So the guardian branch is GONE -- it used to read "or that a
+             parent/guardian is submitting this application on my behalf", which
+             meant the pipeline could legitimately receive a child's photographs
+             and measurements with nothing recording that fact. 18+ only, and the
+             box GATES THE UPLOAD rather than merely sitting beside it. -->
         <label class="form-consent">
-          <input type="checkbox" name="age_consent" required>
+          <input type="checkbox" name="age_consent" id="age_consent" required>
           <span>
-            I confirm I am 18 years of age or older, or that a parent/guardian is submitting this application
-            on my behalf, and I agree to the
+            I confirm I am 18 years of age or older, and I agree to the
             <a href="../legal/terms/index.html">Terms of Use</a>.
           </span>
         </label>
@@ -210,11 +222,41 @@
       status.className = 'form-status' + (kind ? ' form-status-' + kind : '');
     }
 
+    // ---- The age gate actually gates ----------------------------------
+    //
+    // `required` alone only stops a SUBMIT. The file picker was live from page
+    // load, so a minor could still choose and stage photographs before the
+    // form ever refused them -- and the ruling is that they should not be able
+    // to select them at all. So the checkbox enables the picker, and unticking
+    // it CLEARS anything already chosen rather than leaving a staged selection
+    // behind a disabled control.
+    const ageBox = form.elements.age_consent;
+    const photosField = form.elements.photos;
+    const photosLocked = document.getElementById('photos-locked');
+    if (ageBox && photosField) {
+      const syncAgeGate = function () {
+        const ok = !!ageBox.checked;
+        photosField.disabled = !ok;
+        if (!ok) photosField.value = '';
+        if (photosLocked) photosLocked.style.display = ok ? 'none' : '';
+      };
+      ageBox.addEventListener('change', syncAgeGate);
+      syncAgeGate();
+    }
+
     form.addEventListener('submit', async function (e) {
       e.preventDefault();
 
       // Bots that fill every field trip this before anything else runs.
       if (form.elements.botcheck && form.elements.botcheck.checked) return;
+
+      // Checked again here, not just on the control. A disabled input is a UI
+      // state and anyone with devtools can undo it; this is the one line that
+      // makes the rule hold rather than merely display.
+      if (!ageBox || !ageBox.checked) {
+        setStatus('You must confirm you are 18 or older before submitting.', 'error');
+        return;
+      }
 
       const button = form.querySelector('.form-submit');
       const originalLabel = button.textContent;

@@ -127,6 +127,41 @@ Three ways out, none adopted here because this is the owner's call:
 3. Keep the current wording and add an explicit `is_minor` field the Worker records, so at
    minimum the handling difference is *visible* downstream.
 
+### RESOLVED 2026-08-31 — option 2, and the box now gates the upload
+
+**Owner ruling** (Attention Desk, `modelauctions-minor-consent`):
+
+> *"They have to check the box that says they are 18 years old or older, so no minor better
+> submit photos. **If that box is not checked I don't want them to even be able to submit the
+> photo.** … And no parents submitting pictures of their kids, because I just don't have the
+> capacity or anything to deal with kids and Model Auctions right now — unlike with Cadenza
+> Arthouse Education tools where I do keep the records for kids, because that's part of the
+> business. In the case of Model Auctions, kids are not part of the business."*
+
+Note the reasoning, because it is not a blanket policy and a future session should not
+generalise it: **CAET keeps records about children on purpose, because teaching them is the
+business.** Model Auctions has no such need, so it takes none.
+
+What changed in `models/index.html`:
+
+- **The guardian branch is gone.** The consent read *"or that a parent/guardian is submitting
+  this application on my behalf"*, which is precisely what let a child's photographs and
+  measurements into the pipeline with nothing recording it. It now reads 18+ only.
+- **The checkbox gates the file picker.** `required` alone only blocks a *submit*, so the
+  picker was live from page load and a minor could stage photographs before the form ever
+  refused them. The input is now `disabled` until the box is ticked, and unticking it
+  **clears any selection already made** rather than leaving files staged behind a disabled
+  control.
+- **The submit handler checks again.** A disabled input is a UI state and anyone with devtools
+  can undo it. Verified by doing exactly that in a browser: with the attribute stripped and
+  consent unticked, no upload fires and the form says *"You must confirm you are 18 or older
+  before submitting."*
+
+**Still open, and deliberately not invented here:** nothing verifies the claim, and the Worker
+records no age assertion alongside the submission. A checkbox is an assertion, not a
+verification — this closes the *"we collected it without noticing"* hole, not the *"someone
+lied"* one.
+
 ## 6. What happens after the email — and what does not
 
 **Nothing automatic.** There is no CAMT consumer for these messages yet.
