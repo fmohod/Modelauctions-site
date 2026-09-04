@@ -464,7 +464,21 @@
     $('#app').hidden = v !== 'app';
     document.body.classList.toggle('media-app-mode', v === 'app');
     if (v === 'app') renderApp();
-    try { localStorage.setItem('ma-media-view', v); } catch (e) {}
+    // masthead: Streaming is the guide; Media is everything else
+    var navMedia = $('#nav-media'), navStreaming = $('#nav-streaming');
+    if (navMedia && navStreaming) {
+      navMedia.classList.toggle('active', v !== 'guide');
+      navStreaming.classList.toggle('active', v === 'guide');
+    }
+  }
+
+  // Which view to open on arrival (owner ruling 2026-09-04):
+  //   ?view=guide|browse|app  → that view (the masthead's Streaming link sends ?view=guide)
+  //   otherwise               → App on a phone, Browse on anything wider
+  function initialView() {
+    var m = /[?&]view=(guide|browse|app)\b/.exec(location.search);
+    if (m) return m[1];
+    return window.matchMedia('(max-width: 768px)').matches ? 'app' : 'browse';
   }
 
   // ── boot ───────────────────────────────────────────────────
@@ -510,9 +524,7 @@
       renderPoster();
       renderGuide();
       renderBrowse();
-      var saved = null;
-      try { saved = localStorage.getItem('ma-media-view'); } catch (e) {}
-      setView(saved === 'browse' || saved === 'app' ? saved : 'guide');
+      setView(initialView());
       $$('.view-tab, .app-tab[data-view]').forEach(function (b) {
         b.onclick = function () {
           setView(b.dataset.view);

@@ -20,9 +20,11 @@
        This is the testing ground for the Cadenza Arthouse media page.
        Four channels, each a loop of YouTube-hosted videos scheduled
        against a fixed epoch, so "what is on now" is arithmetic every
-       visitor agrees on. Two views: the guide (channels against the
-       clock) and browse (streaming-menu rows). Nothing is fetched
-       from YouTube until a click. Contract: ../MEDIA.md.
+       visitor agrees on. Three views, routed by the masthead (owner
+       ruling 2026-09-04): "Streaming" opens the guide (channels
+       against the clock, ?view=guide); "Media" opens Browse on a
+       desktop and App on a phone, decided by viewport width. Nothing
+       is fetched from YouTube until a click. Contract: ../MEDIA.md.
        ══════════════════════════════════════════════════════════════ -->
 
   <header class="masthead">
@@ -60,7 +62,8 @@
         <a href="../all.html">Featured</a>
         <a href="../models/index.html">Models</a>
         <a href="../photographers/index.html">Photographers</a>
-        <a href="index.html" class="active">Media</a>
+        <a href="index.html" id="nav-media" class="active">Media</a>
+        <a href="index.html?view=guide" id="nav-streaming">Streaming</a>
         <a href="#" class="nav-dim">Events</a>
         <a href="#" class="nav-dim">About</a>
       </nav>
@@ -80,7 +83,7 @@
           <h2 class="stage-title">Now Showing</h2>
         </div>
         <div class="view-tabs" role="tablist" aria-label="View">
-          <button type="button" class="view-tab is-active" data-view="guide">Guide</button>
+          <button type="button" class="view-tab" data-view="guide">Streaming</button>
           <button type="button" class="view-tab" data-view="browse">Browse</button>
           <button type="button" class="view-tab" data-view="app">App</button>
         </div>
@@ -137,7 +140,7 @@
       <div id="app-body"></div>
       <nav class="app-tabbar" aria-label="App navigation">
         <button type="button" class="app-tab is-active" data-view="app"><span class="app-tab-ico">⌂</span>Home</button>
-        <button type="button" class="app-tab" data-view="guide"><span class="app-tab-ico">▤</span>Guide</button>
+        <button type="button" class="app-tab" data-view="guide"><span class="app-tab-ico">▤</span>Streaming</button>
         <button type="button" class="app-tab" data-view="browse"><span class="app-tab-ico">▦</span>Browse</button>
         <a class="app-tab" href="https://www.youtube.com/@cadenzaarthouse" target="_blank" rel="noopener"><span class="app-tab-ico">▶</span>YouTube</a>
       </nav>

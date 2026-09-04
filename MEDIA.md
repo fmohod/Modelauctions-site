@@ -22,7 +22,12 @@ then rows of tiles, hover shows more) as an acceptable version one, and the **TV
 lined up against the current time) as the real target. A third came on 2026-09-04 with three screenshots of the Netflix phone app (`F:\Media\inbox\screenshots\S23\Screenshot_20260904_1350*_Netflix.jpg`): the **App** view — app bar with the master logo, filter chips, a portrait billboard with the brand mark in its corner and Play / Join-live buttons, an "on now" row with the loop's progress, a picks row with corner badges, one row per channel, and a floating bottom tab bar that switches views. Gold where the reference is red; the logo is recolored by CSS mask over the master `assets/logo.png`, never a redrawn copy. The ruling that binds the whole
 thing, restated in his brief for this session: **video plays only when someone actually clicks.**
 
-Nav ruling, same day: *Castings* folds into *Events*; *Media* takes its place in the masthead.
+Nav rulings, same day: *Castings* folds into *Events*; *Media* takes its place in the masthead;
+then, once all three views existed: **the live-TV guide is "Streaming" in the masthead; "Media"
+opens Browse on a desktop and App on a phone** (the owner's words: Browse suits desktop, App suits
+mobile). The page routes on arrival: `?view=guide|browse|app` wins, otherwise viewport width at
+768px decides. The three tabs on the page and the app's bottom bar still switch views for the
+visit; nothing is remembered between visits.
 
 ## 2. What it is
 
