@@ -12,7 +12,7 @@ the Cadenza Arthouse group.
 | `models/` | **the model application form.** Uploads to R2, then emails. See `INTAKE.md` |
 | `photographers/` | photography booking enquiry. Email only, no uploads |
 | `thank-you/` | post-submission page for both forms |
-| `legal/terms/` | Terms of Use |
+| `legal/terms/` | Terms of Use. Six Parts; badges mark what is in effect now vs. what waits for a feature launch. §1.6 and §1.8 describe the intake pipeline and must move with `INTAKE.md` |
 | `0010/`, `0011/` | published event coverage, same article format as CadenzaFeed |
 | `style.css`, `assets/`, `images/` | presentation |
 

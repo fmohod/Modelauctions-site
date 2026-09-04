@@ -206,7 +206,7 @@ never onboarded are cost and exposure with no corresponding value.
 | Worker source | `cadenza-upload.fmohod.workers.dev` is deployed but its source is not in this repo |
 | No reference number for the applicant | `/thank-you/?ref=<id>` receives the submission id and never displays it, so an applicant has no way to reference their own submission |
 | Field name drift | the form's `measurements` is sent to the Worker as `notes` |
-| No privacy notice | the consent links to Terms of Use; nothing states what happens to photographs or how to withdraw them |
+| ~~No privacy notice~~ | **Closed 2026-09-04.** `legal/terms/` §1.6 (Applications and the information you send us) and §1.8 (Privacy) now state what the form collects, where photographs go, that applying is not publication, how to withdraw, and which service providers see technical data. Written from this document, not from memory. Retention is still undecided (§7) and the terms deliberately state no period. **If a form field changes, §1.6 and this file change in the same session.** |
 
 ## 9. Open questions
 
