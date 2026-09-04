@@ -17,9 +17,9 @@ Voice log `20260903-02` (3 September 2026), in his words, condensed:
 > video as if it were playing live … using YouTube as the hosting service … pulling from the
 > YouTube thumbnail."*
 
-Two presentations named, both wanted: the **Netflix-style menu** (headline section, then rows of
-tiles, hover shows more) as an acceptable version one, and the **TV guide** (channels lined up
-against the current time) as the real target. Both are built. The ruling that binds the whole
+Two presentations named in the log, both built: the **Netflix-style menu** (headline section,
+then rows of tiles, hover shows more) as an acceptable version one, and the **TV guide** (channels
+lined up against the current time) as the real target. A third came on 2026-09-04 with three screenshots of the Netflix phone app (`F:\Media\inbox\screenshots\S23\Screenshot_20260904_1350*_Netflix.jpg`): the **App** view — app bar with the master logo, filter chips, a portrait billboard with the brand mark in its corner and Play / Join-live buttons, an "on now" row with the loop's progress, a picks row with corner badges, one row per channel, and a floating bottom tab bar that switches views. Gold where the reference is red; the logo is recolored by CSS mask over the master `assets/logo.png`, never a redrawn copy. The ruling that binds the whole
 thing, restated in his brief for this session: **video plays only when someone actually clicks.**
 
 Nav ruling, same day: *Castings* folds into *Events*; *Media* takes its place in the masthead.
@@ -28,7 +28,7 @@ Nav ruling, same day: *Castings* folds into *Events*; *Media* takes its place in
 
 | Piece | File | Job |
 |---|---|---|
-| the page | `media/index.html` | stage (poster → player), view tabs, guide, browse, the honesty note |
+| the page | `media/index.html` | stage (poster → player), view tabs, guide, browse, app, the honesty note |
 | the engine | `media/media.js` | schedule math, guide and browse rendering, click-to-load player |
 | the lineup | `media/channels.json` | channels, their order, each video's id, title, duration |
 | channel art | `media/art/*.jpg` | one image per channel for the browse hero cards |

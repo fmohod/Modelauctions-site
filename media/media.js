@@ -326,13 +326,144 @@
     }
   }
 
+  // ── rendering: app (the phone streaming-app shape) ─────────
+  // Portrait cards cut from 16:9 thumbnails, a billboard for what
+  // is on, a "continue" row with the loop's progress, a picks row,
+  // then one row per channel. Chips filter the rows by channel.
+  var appFilter = 'all';
+
+  function appCard(v, ch, index, opts) {
+    opts = opts || {};
+    var c = el('button', 'app-card' + (opts.wide ? ' app-card-wide' : ''));
+    c.type = 'button';
+    var img = el('img');
+    img.loading = 'lazy'; img.alt = ''; img.src = THUMB(v.id);
+    c.appendChild(img);
+    c.appendChild(el('span', 'app-card-scrim'));
+    if (opts.corner) c.appendChild(el('span', 'app-corner', opts.corner));
+    if (opts.play) c.appendChild(el('span', 'app-card-play', '▶'));
+    var t = el('span', 'app-card-title', shortTitle(v.title));
+    c.appendChild(t);
+    if (opts.badge) c.appendChild(el('span', 'app-badge', opts.badge));
+    if (opts.progress != null) {
+      var bar = el('span', 'app-progress');
+      var fill = el('span', 'app-progress-fill');
+      fill.style.width = Math.round(opts.progress * 100) + '%';
+      bar.appendChild(fill);
+      c.appendChild(bar);
+    }
+    c.onclick = function () {
+      if (ch) play(ch, index, !!opts.live); else playLoose(v);
+    };
+    return c;
+  }
+
+  function shortTitle(t) {
+    // "Title | Venue, City" → "Title" for the card face; the full title is on the player
+    return String(t).split(' | ')[0];
+  }
+
+  function appRow(title, sub, cards) {
+    var row = el('section', 'app-row');
+    var head = el('div', 'app-row-head');
+    head.appendChild(el('h3', null, title));
+    if (sub) head.appendChild(el('span', 'app-row-sub', sub));
+    row.appendChild(head);
+    var strip = el('div', 'app-strip');
+    cards.forEach(function (c) { strip.appendChild(c); });
+    row.appendChild(strip);
+    return row;
+  }
+
+  function renderApp() {
+    var chips = $('#app-chips');
+    var body = $('#app-body');
+    chips.innerHTML = ''; body.innerHTML = '';
+    var now = Date.now();
+
+    // chips: All + one per channel
+    [{ id: 'all', name: 'All' }].concat(state.channels).forEach(function (c) {
+      var b = el('button', 'app-chip' + (appFilter === c.id ? ' is-active' : ''), c.name);
+      b.type = 'button';
+      b.onclick = function () { appFilter = c.id; renderApp(); };
+      chips.appendChild(b);
+    });
+
+    var shown = state.channels.filter(function (c) { return appFilter === 'all' || c.id === appFilter; });
+
+    // billboard: what is on the first shown channel right now
+    var feat = shown[0];
+    var fpos = channelPosition(feat, now);
+    var bb = el('div', 'app-billboard');
+    bb.style.backgroundImage = 'url(' + THUMB(fpos.video.id, 'maxresdefault') + '), url(' + THUMB(fpos.video.id) + ')';
+    var bbInner = el('div', 'app-billboard-inner');
+    bbInner.appendChild(el('span', 'app-billboard-mark'));
+    var bbText = el('div', 'app-billboard-text');
+    bbText.appendChild(el('span', 'app-billboard-title', shortTitle(fpos.video.title)));
+    var tags = ['Channel ' + feat.number, feat.name];
+    if (fpos.video.location) tags.push(fpos.video.location);
+    tags.push(fmtDur(fpos.video.dur));
+    bbText.appendChild(el('span', 'app-billboard-tags', tags.join('  ·  ')));
+    var btns = el('div', 'app-billboard-btns');
+    var b1 = el('button', 'app-btn app-btn-primary', '▶  Play');
+    b1.type = 'button'; b1.onclick = function () { play(feat, fpos.index, false); };
+    var b2 = el('button', 'app-btn app-btn-secondary', '⦿  Join live · ' + fmtDur(fpos.offset) + ' in');
+    b2.type = 'button'; b2.onclick = function () { play(feat, fpos.index, true); };
+    btns.appendChild(b1); btns.appendChild(b2);
+    bbText.appendChild(btns);
+    bbInner.appendChild(bbText);
+    bb.appendChild(bbInner);
+    body.appendChild(bb);
+
+    // "on now" row: every shown channel, with the loop's progress
+    body.appendChild(appRow('On now across the channels', null, shown.map(function (ch) {
+      var p = channelPosition(ch, now);
+      return appCard(p.video, ch, p.index, { play: true, live: true, badge: 'CH ' + ch.number + ' · on now', progress: p.offset / p.video.dur });
+    })));
+
+    // picks: the longest video in each shown channel, numbered
+    var picks = [];
+    shown.forEach(function (ch) {
+      var best = 0;
+      ch.lineup.forEach(function (v, i) { if (v.dur > ch.lineup[best].dur) best = i; });
+      picks.push({ v: ch.lineup[best], ch: ch, i: best });
+    });
+    body.appendChild(appRow('Top picks', 'Longest on each channel', picks.map(function (p, n) {
+      return appCard(p.v, p.ch, p.i, { corner: 'TOP ' + (n + 1), badge: p.ch.name });
+    })));
+
+    // one row per shown channel
+    shown.forEach(function (ch) {
+      body.appendChild(appRow(ch.name, ch.lineup.length + ' videos · loops every ' + fmtDur(ch.total), ch.lineup.map(function (v, i) {
+        return appCard(v, ch, i, { badge: fmtDur(v.dur) });
+      })));
+    });
+
+    // loose videos, only on "All"
+    if (appFilter === 'all') {
+      var inLineup = {};
+      state.channels.forEach(function (ch) { ch.lineup.forEach(function (v) { inLineup[v.id] = true; }); });
+      var loose = Object.keys(state.manifest.videos).filter(function (id) { return !inLineup[id]; });
+      if (loose.length) {
+        body.appendChild(appRow('Also on the channel', 'Not in a lineup yet', loose.map(function (id) {
+          var v = state.manifest.videos[id];
+          return appCard(v, null, 0, { badge: fmtDur(v.dur) });
+        })));
+      }
+    }
+  }
+
   // ── view switching ─────────────────────────────────────────
   function setView(v) {
     state.view = v;
     $$('.view-tab').forEach(function (b) { b.classList.toggle('is-active', b.dataset.view === v); });
+    $$('.app-tab[data-view]').forEach(function (b) { b.classList.toggle('is-active', b.dataset.view === v); });
     $('#guide').hidden = v !== 'guide';
     $('#guide-window').hidden = v !== 'guide';
     $('#browse').hidden = v !== 'browse';
+    $('#app').hidden = v !== 'app';
+    document.body.classList.toggle('media-app-mode', v === 'app');
+    if (v === 'app') renderApp();
     try { localStorage.setItem('ma-media-view', v); } catch (e) {}
   }
 
@@ -368,6 +499,7 @@
     // and keep the now-line honest in between.
     renderGuide();
     if (!state.playing) renderPoster();
+    if (state.view === 'app') renderApp();
   }
 
   fetch(MANIFEST_URL, { cache: 'no-cache' })
@@ -380,8 +512,13 @@
       renderBrowse();
       var saved = null;
       try { saved = localStorage.getItem('ma-media-view'); } catch (e) {}
-      setView(saved === 'browse' ? 'browse' : 'guide');
-      $$('.view-tab').forEach(function (b) { b.onclick = function () { setView(b.dataset.view); }; });
+      setView(saved === 'browse' || saved === 'app' ? saved : 'guide');
+      $$('.view-tab, .app-tab[data-view]').forEach(function (b) {
+        b.onclick = function () {
+          setView(b.dataset.view);
+          if (b.classList.contains('app-tab')) $('#stage').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
+      });
       $('#now-restart').onclick = function () {
         if (state.playing) play(state.playing.channel, state.playing.index, false);
       };

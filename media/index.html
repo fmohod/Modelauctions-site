@@ -82,6 +82,7 @@
         <div class="view-tabs" role="tablist" aria-label="View">
           <button type="button" class="view-tab is-active" data-view="guide">Guide</button>
           <button type="button" class="view-tab" data-view="browse">Browse</button>
+          <button type="button" class="view-tab" data-view="app">App</button>
         </div>
       </div>
 
@@ -124,6 +125,23 @@
 
     <!-- ── Browse view ─────────────────────────────────────────── -->
     <section id="browse" class="browse" aria-label="Browse" hidden></section>
+
+    <!-- ── App view: the phone streaming-app shape ─────────────── -->
+    <section id="app" class="app" aria-label="App" hidden>
+      <div class="app-bar">
+        <span class="app-logo" role="img" aria-label="Model Auctions"></span>
+        <span class="app-bar-title">Home</span>
+        <span class="app-bar-right"><span class="app-onair"><span class="live-dot"></span>4 channels</span></span>
+      </div>
+      <div id="app-chips" class="app-chips"></div>
+      <div id="app-body"></div>
+      <nav class="app-tabbar" aria-label="App navigation">
+        <button type="button" class="app-tab is-active" data-view="app"><span class="app-tab-ico">⌂</span>Home</button>
+        <button type="button" class="app-tab" data-view="guide"><span class="app-tab-ico">▤</span>Guide</button>
+        <button type="button" class="app-tab" data-view="browse"><span class="app-tab-ico">▦</span>Browse</button>
+        <a class="app-tab" href="https://www.youtube.com/@cadenzaarthouse" target="_blank" rel="noopener"><span class="app-tab-ico">▶</span>YouTube</a>
+      </nav>
+    </section>
 
     <p class="media-note">
       Nothing here is a live stream. Each channel is a lineup of published videos that loops around
