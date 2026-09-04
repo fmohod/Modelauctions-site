@@ -12,6 +12,7 @@ the Cadenza Arthouse group.
 | `models/` | **the model application form.** Uploads to R2, then emails. See `INTAKE.md` |
 | `photographers/` | photography booking enquiry. Email only, no uploads |
 | `thank-you/` | post-submission page for both forms |
+| `media/` | **the Media page** — four channels of Cadenza Arthouse video presented like live TV, scheduled by arithmetic over YouTube-hosted clips. Testing ground for the cadenzaarthouse.com media page. See `MEDIA.md` |
 | `legal/terms/` | Terms of Use. Six Parts; badges mark what is in effect now vs. what waits for a feature launch. §1.6 and §1.8 describe the intake pipeline and must move with `INTAKE.md` |
 | `0010/`, `0011/` | published event coverage, same article format as CadenzaFeed |
 | `style.css`, `assets/`, `images/` | presentation |
@@ -36,6 +37,7 @@ form is not an ordinary contact form and must not be edited like one. In particu
 | Document | Location | Covers |
 |---|---|---|
 | `INTAKE.md` | this repo | the submission pipeline, what is collected, sensitivity, failure modes |
+| `MEDIA.md` | this repo | the Media page: channels, the schedule math, click-to-load, the manifest |
 | `EMAIL_INTAKE.md` | `F:\Apps\Cadenza Arthouse Media Tools\` | what CAMT does with the resulting mail |
 | `DOCUMENTATION_REGISTER.md` | `F:\Apps\Cadenza Arthouse Media Tools\` | every contract across every repo, and which pairs must move together |
 
