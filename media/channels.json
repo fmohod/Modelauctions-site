@@ -1,5 +1,5 @@
 {
-  "_comment": "The channel lineup for /media/. Contract: MEDIA.md. Channels are the owner's YouTube playlists, in his order; a video may appear in more than one lineup. Durations come from YouTube and matter: the schedule is arithmetic over them.",
+  "_comment": "The channel lineup for /media/. Contract: MEDIA.md. Channels are the owner's YouTube playlists, in his order; `lineup` is rewritten from the playlist by CAMT jobs\\youtube_lineup.py, and `extra` is appended after it and survives every fetch. Durations come from YouTube and matter: the schedule is arithmetic over them.",
   "epoch": "2026-09-04T00:00:00-05:00",
   "guide_window_min": 30,
   "guide_step_min": 5,
@@ -26,7 +26,9 @@
       "lineup": [
         "gkeUIE-H3Xc",
         "UzyEh0iAqME",
-        "MjUkes23rJs",
+        "MjUkes23rJs"
+      ],
+      "extra": [
         "V8Q3umGcfx8",
         "APK1YaakkO8"
       ]
@@ -52,7 +54,9 @@
       "tagline": "Something on in the background",
       "playlist": "PLjTXCzQp3LATwrHFMrYCGnzfuZotPSaTv",
       "lineup": [
-        "y1sQF2Embto",
+        "y1sQF2Embto"
+      ],
+      "extra": [
         "WfCX3fBv-GU",
         "LrUC4VIgMb8"
       ]
@@ -119,7 +123,8 @@
       "duration": "0:10",
       "location": "",
       "year": "2022",
-      "desc": "A ten-second loop."
+      "desc": "A ten-second loop.",
+      "yt_title": "Cadenza Sunrise"
     },
     "YLw5dvS-08o": {
       "title": "From Vigil to Canvass: Houston Volunteers Mobilize Following ICE Shooting of Lorenzo Salgado Araujo",
@@ -144,13 +149,15 @@
       "title": "Universe B | Teaser Trailer 3",
       "duration": "2:25",
       "location": "",
-      "year": "2026"
+      "year": "2026",
+      "yt_title": "Universe B - teaser trailer 3"
     },
     "LrUC4VIgMb8": {
       "title": "Universe B | Temporal Duplicate",
       "duration": "0:17",
       "location": "",
-      "year": "2026"
+      "year": "2026",
+      "yt_title": "Universe B - Temporal Duplicate"
     }
   }
 }

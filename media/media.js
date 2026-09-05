@@ -492,7 +492,7 @@
       };
     });
     var channels = m.channels.map(function (c) {
-      var lineup = c.lineup.map(function (id) {
+      var lineup = (c.lineup || []).concat(c.extra || []).map(function (id) {
         if (!videos[id]) throw new Error('channels.json: lineup references unknown video ' + id);
         return videos[id];
       });

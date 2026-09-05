@@ -93,18 +93,28 @@ among the service providers that see technical data.
   "channels": [
     { "number": 1, "id": "live", "name": "Live Shows", "tagline": "…",
       "playlist": "YouTube playlist id", "art": "art/live.jpg",
-      "lineup": ["videoId", "videoId"] }
+      "lineup": ["videoId", "videoId"],
+      "extra":  ["videoId"] }
   ],
   "videos": {
     "videoId": { "title": "…", "duration": "m:ss or h:mm:ss or seconds",
-                 "location": "…", "year": "…", "desc": "…" }
+                 "location": "…", "year": "…", "desc": "…", "yt_title": "…" }
   }
 }
 ```
 
-A lineup id that is not in `videos` throws at load and the page says so. Hand-maintained today;
-a CAMT job could write it from the channel, but that is a network channel decision under
-AGENTS rule 8 and is not made here.
+The page plays `lineup` then `extra`, in order. A lineup id that is not in `videos` throws at load
+and the page says so.
+
+**Who writes it.** CAMT `jobs\youtube_lineup.py` (menu 36; channel #8 under AGENTS rule 8, owner
+ruling 2026-09-04). `fetch` rewrites every channel's `lineup` from its YouTube playlist in playlist
+order, takes exact durations from the API, adds new videos to `videos`, and leaves `extra` alone,
+so a clip the owner wants on a channel without moving it into the playlist survives. `title` is
+rewritten from YouTube only while it still equals `yt_title` (the last YouTube title seen); a title
+he edited stays. `location`, `year` and a non-empty `desc` are never overwritten. The API key is a
+Cloud-project credential in CAMT's DPAPI box; it is never in this repo or in page source. Offline,
+the job says so and exits 2 and the page keeps serving whatever manifest it has. Until the key
+exists, the manifest is maintained by hand exactly as before.
 
 ## 6. Decisions taken in this build, each reversible
 
@@ -127,7 +137,7 @@ AGENTS rule 8 and is not made here.
 |---|---|
 | Short catalog | every loop is under eleven minutes, so the guide repeats fast. Long recordings fix this, not code |
 | No per-day schedule | he described *"Aisha's Sunday class … weekly on Sundays"*. V1 is one loop per channel, all day. A day/hour grid over the loop is the next step and the manifest shape allows it |
-| Manifest by hand | new uploads do not appear until someone edits `channels.json` |
+| Manifest by hand until the key lands | `jobs\youtube_lineup.py fetch` writes it from the playlists once the YouTube Data API key is stored (`set-key`). Adding a video to a playlist on YouTube is then the whole workflow |
 | Autoplay policy | browsers permit autoplay after a click; the first click is the user gesture, so the player starts. If a browser still refuses, the YouTube play button is right there |
 | Atmosphere art | none; falls back to the clip thumbnail |
 
