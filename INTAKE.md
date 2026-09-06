@@ -209,13 +209,103 @@ never onboarded are cost and exposure with no corresponding value.
 | Field name drift | the form's `measurements` is sent to the Worker as `notes` |
 | ~~No privacy notice~~ | **Closed 2026-09-04.** `legal/terms/` §1.6 (Applications and the information you send us) and §1.8 (Privacy) now state what the form collects, where photographs go, that applying is not publication, how to withdraw, and which service providers see technical data. Written from this document, not from memory. Retention is still undecided (§7) and the terms deliberately state no period. **If a form field changes, §1.6 and this file change in the same session.** |
 
+## 10. The review loop — notify, review on the phone, decide, promote (DRAFT design, 2026-09-06)
+
+**The ask** (owner, 2026-09-05/06, in his words): *"eventually I want CAMT to check for new
+submissions and let me know via ntfy. And then I can click the ntfy bubble and see a mobile-friendly
+review where I can actually click the link to the Instagram page, or swipe through the pictures they
+sent, all without having to come to the desktop and open that shortcut and click through every
+individual picture that opens as its own tab … and I could even tap approve that person to be saved
+as an entity and a round-one research can be done to build up a public profile bio report."*
+
+**What already exists, so nothing is invented twice.** ntfy is CAMT's phone channel: self-hosted
+on the owner's machine, reached over the tailnet, `core.notify(title, body, priority, click=…)`,
+with the phone-priority policy in `ANNOUNCEMENTS.md`. The Worker already lists submissions at
+`/admin`. The email notification already files a `restricted` desk entry (`EMAIL_INTAKE.md`). What
+is missing is the glue, in four stages that ship one at a time.
+
+**Where the Worker lives now (owner ruling 2026-09-06):** its own private GitHub repo,
+`cadenza-upload`, cloned at `F:\Apps\cadenza-upload`, deployed by Workers Builds on push exactly
+as `modelauctions-site` is. Editing in the dashboard ends the day that connection is made. The
+CAMT copy under `workers\cadenza-upload\` becomes a pointer, not a mirror.
+
+### Stage 1 — CAMT notices a submission
+
+`jobs\submissions_watch.py`, unattended (`JOB_CONTRACT.md`), every few minutes: list `*/info.json`
+under every type prefix in `cadenza-private`, compare against a local ledger, push one notification
+per new id and record it. This is where **R2 is the authority for "did a submission happen"** (§4)
+finally gets a reader, and the **orphan check** (freeze criterion 4) falls out of the same ledger:
+ids in R2 with no desk entry.
+
+- Needs an **R2 API token, read-only, scoped to `cadenza-private`**, in CAMT's DPAPI box beside the
+  Square token. That is a new outbound channel under AGENTS rule 8 (**#9, owner ruling required**;
+  payload: nothing leaves, it reads). The Worker's own binding is not a credential CAMT can use.
+- The ledger (`registry\submissions.yaml`, via `core.py`, never written directly) holds the
+  **record, not the payload** (settled 2026-08-03): `submission_id, type, submitted_at, file_count,
+  context, notified_at, decision, decided_at, entity_id` — no name, no email, no photographs. The
+  photographs stay in R2, which is where the review happens.
+- The push carries **no personal data**: *"New model application · SUB-M8X2K1A-QZ4T · 3 photos ·
+  via card 12"*, priority per policy, `click` = the review page below. ntfy is private over the
+  tailnet, but the lock screen is a public surface (`core.notify` already reasons this way).
+- Offline: degrades, says so, retries next tick. Never a core dependency (rule 8).
+
+### Stage 2 — the review page, on the phone
+
+The Worker gains `GET /admin/review/<submission-id>`: one submission, mobile-first. Full-width
+photographs in a horizontal **scroll-snap strip** (swipe; tap for full screen; no new tabs), then
+the contact block as **tappable links** — the handle as `https://instagram.com/<handle>` with the
+`@` stripped, phone as `tel:`, email as `mailto:` — then notes/measurements and the arrival context.
+The `/admin` list links each row to it. Same Basic-auth gate as today; **Cloudflare Access in front
+of `/admin` is the recommended replacement** (dashboard setting, free at this size), because a
+one-tap Google login on the phone beats a shared password typed on glass.
+
+### Stage 3 — decisions, without an inbound port
+
+Buttons on the review page: **Approve · Decline · Later**. Each writes `decision.json` beside
+`info.json` in R2 (`{decision, decided_at, by:"admin"}`); the Worker has the binding, so no new
+credential. CAMT's poller reads decisions on its next tick and applies them. R2 is the mailbox in
+both directions; CAMT never listens on a public port. Declined submissions become the first real
+input to **retention** (freeze criterion 2): a declined or ignored application's photographs are
+cost and exposure with no value (§7).
+
+### Stage 4 — approve → entity → round-one research
+
+Approving is the owner's confirmation in the authority chain (**model proposes → CAMT validates →
+owner confirms → CAMT executes**, `CONSOLE.md`); the tap *is* the confirmation, so CAMT executes:
+
+1. **A person entity**, through `core.py` (rule 2), `verification: self_identified` — the applicant
+   said who they are; nobody has confirmed it (open question 3 below, now with a proposed answer).
+   **`publication: restricted`.** No tool raises it (CAS §9.13), and the Terms (`legal/terms/`
+   §1.6) promise the applicant that nothing they sent is published or used publicly without separate
+   written consent. Approval is an internal state, not a page.
+2. **Round-one research** — a report, `restricted`, filed on the entity, built the way the newsroom
+   jobs already build research: from what the applicant handed over (their photographs, their handle,
+   their notes) and the public profile that handle points at. Purpose: prepare the owner for the
+   conversation and the shoot. **Not** a dossier: no scraping beyond the profile they gave, nothing
+   from people who did not apply, and the report never leaves `restricted` on its own. If it is ever
+   to become a public bio, that is a separate written-consent step with the person, the same as any
+   feature.
+
+This stage is the one that needs the most owner rulings before code: the verification level, what
+"round one" may look at, and where the report lives on the entity.
+
+### Order and gates
+
+Stage 1 is worth building alone and needs only the R2 token ruling. Stage 2 is Worker-only and
+needs no ruling. Stage 3 needs 1 and 2. Stage 4 needs 3 plus the three rulings above. None of it
+touches the forms, so §2 and the Terms are unchanged.
+
 ## 9. Open questions
 
 1. **The minor question (§5)** — which of the three options.
 2. **Retention (§7)** — how long, and what the lifecycle rule actually is.
 3. **Does an accepted applicant become a `person` entity, and at what `verification` level?**
    They self-identified, which is real evidence but not the owner's confirmation.
+   *Proposed 2026-09-06 (§10 stage 4): yes, on the owner's approve tap, at `self_identified`,
+   `restricted`.*
 4. **Who reconciles R2 against the mailbox**, and how often, so orphans surface?
+   *Proposed 2026-09-06 (§10 stage 1): `jobs\submissions_watch.py`, every few minutes, from its
+   own ledger.*
 5. **Do the two intakes stay in one inbox?** Separate addresses would let
    `EMAIL_INTAKE.md` route them at different sensitivities without reading the body.
 
