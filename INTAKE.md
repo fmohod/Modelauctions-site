@@ -261,9 +261,13 @@ one-tap Google login on the phone beats a shared password typed on glass.
 
 ### Stage 3 — decisions, without an inbound port
 
-Buttons on the review page: **Approve · Decline · Later**. Each writes `decision.json` beside
-`info.json` in R2 (`{decision, decided_at, by:"admin"}`); the Worker has the binding, so no new
-credential. CAMT's poller reads decisions on its next tick and applies them. R2 is the mailbox in
+Buttons on the review page: **Approve · File as entity · Later · Decline** (built 2026-09-06). Each
+writes `decision.json` beside `info.json` in R2 (`{decision, decided_at, by:"admin"}`); the Worker
+has the binding, so no new credential. *File as entity* is the owner's instruction to stage 4; the
+Worker only records it. **Delete** (also built) removes every object under the submission's folder,
+one from the review page or several from the list's select mode, after a confirm. The payload is
+gone; the notification email and, later, the CAMT ledger record remain, which is exactly the
+*records not payloads* shape retention wants. CAMT's poller reads decisions on its next tick and applies them. R2 is the mailbox in
 both directions; CAMT never listens on a public port. Declined submissions become the first real
 input to **retention** (freeze criterion 2): a declined or ignored application's photographs are
 cost and exposure with no value (§7).
