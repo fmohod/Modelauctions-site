@@ -44,6 +44,7 @@ exists in the payload** — a consumer does not have to guess.
 | `age_consent` | ✅ | see §5 — this is the important one |
 | `_context` | auto | every query-string param the visitor arrived with, plus `document.referrer` |
 | `submission_id` | auto | returned by the Worker in step 1 |
+| *(Worker adds)* `userAgent` | auto | the browser's User-Agent string, recorded by the Worker into `info.json`. Not sent by the form; learned 2026-09-05 from the Worker source |
 
 `_context` is real provenance, not tracking cruft: a QR code carrying `?event=` or `?card=`
 tells you which printed card or which event produced the application. It rides along into
@@ -202,8 +203,8 @@ never onboarded are cost and exposure with no corresponding value.
 
 | Gap | Detail |
 |---|---|
-| `R2_SETUP_GUIDE.md` | referenced by a comment in `models/index.html`; **does not exist** anywhere on the machine. The Worker's bucket, key layout, and `info.json` shape are therefore undocumented |
-| Worker source | `cadenza-upload.fmohod.workers.dev` is deployed but its source is not in this repo |
+| ~~`R2_SETUP_GUIDE.md`~~ | **Closed 2026-09-05.** The guide still does not exist, but the bucket (`cadenza-private`, bound as `CADENZA_BUCKET`), the key layout (`applications/models/SUB-<id>/info.json` + `01-<file>`…, an id never a name) and the `info.json` shape are now written down in CAMT at `workers\cadenza-upload\README.md`, read from the deployed Worker |
+| ~~Worker source~~ | **Mirrored 2026-09-05** to CAMT `workers\cadenza-upload\index.js` via the Cloudflare connector. Kept out of this repo on purpose: modelauctions.net is served by a Worker with this repo as static assets, so a file here is a public URL. The deployed Worker stays authoritative; the mirror can go stale because the Worker is still edited by paste in the dashboard |
 | No reference number for the applicant | `/thank-you/?ref=<id>` receives the submission id and never displays it, so an applicant has no way to reference their own submission |
 | Field name drift | the form's `measurements` is sent to the Worker as `notes` |
 | ~~No privacy notice~~ | **Closed 2026-09-04.** `legal/terms/` §1.6 (Applications and the information you send us) and §1.8 (Privacy) now state what the form collects, where photographs go, that applying is not publication, how to withdraw, and which service providers see technical data. Written from this document, not from memory. Retention is still undecided (§7) and the terms deliberately state no period. **If a form field changes, §1.6 and this file change in the same session.** |
