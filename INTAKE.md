@@ -37,7 +37,7 @@ exists in the payload** — a consumer does not have to guess.
 |---|---|---|
 | `name` | ✅ | |
 | `email` | ✅ | |
-| `phone` | ✅ | |
+| `phone` | ✅ | recorded into `info.json` by the Worker from 2026-09-06 (it previously reached only the email) so the review page can offer a `tel:` link |
 | `instagram` | — | |
 | `measurements` | — | free text. Sent to the Worker under the name **`notes`**, not `measurements` |
 | `photos` | ✅ | multiple; `jpeg png webp heic heif` |
@@ -206,7 +206,7 @@ never onboarded are cost and exposure with no corresponding value.
 | ~~`R2_SETUP_GUIDE.md`~~ | **Closed 2026-09-05.** The guide still does not exist, but the bucket (`cadenza-private`, bound as `CADENZA_BUCKET`), the key layout (`applications/models/SUB-<id>/info.json` + `01-<file>`…, an id never a name) and the `info.json` shape are now written down in CAMT at `workers\cadenza-upload\README.md`, read from the deployed Worker |
 | ~~Worker source~~ | **Mirrored 2026-09-05** to CAMT `workers\cadenza-upload\index.js` via the Cloudflare connector. Kept out of this repo on purpose: modelauctions.net is served by a Worker with this repo as static assets, so a file here is a public URL. The deployed Worker stays authoritative; the mirror can go stale because the Worker is still edited by paste in the dashboard |
 | No reference number for the applicant | `/thank-you/?ref=<id>` receives the submission id and never displays it, so an applicant has no way to reference their own submission |
-| Field name drift | the form's `measurements` is sent to the Worker as `notes` |
+| Field name drift | the form's `measurements` is sent to the Worker as `notes`; the review page labels it *Notes / measurements* |
 | ~~No privacy notice~~ | **Closed 2026-09-04.** `legal/terms/` §1.6 (Applications and the information you send us) and §1.8 (Privacy) now state what the form collects, where photographs go, that applying is not publication, how to withdraw, and which service providers see technical data. Written from this document, not from memory. Retention is still undecided (§7) and the terms deliberately state no period. **If a form field changes, §1.6 and this file change in the same session.** |
 
 ## 10. The review loop — notify, review on the phone, decide, promote (DRAFT design, 2026-09-06)
