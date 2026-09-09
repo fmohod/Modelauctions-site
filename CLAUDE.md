@@ -1,7 +1,10 @@
 # CLAUDE.md — Model Auctions site
 
-Static site (GitHub Pages, no build step) at modelauctions.net. Part of the Cadenza Arthouse
-group. Vanilla HTML/CSS/JS — keep it that way unless explicitly asked.
+Static site (no build step) at modelauctions.net, served by the Cloudflare Worker
+`modelauctions-site` and deployed by Workers Builds on every push to `main`. **Not GitHub
+Pages** — that claim sat here until 2026-09-09 and was wrong; the edge cache also ignores
+query strings, so `?v=` will not bust it. Part of the Cadenza Arthouse group. Vanilla
+HTML/CSS/JS — keep it that way unless explicitly asked.
 
 ## The one rule that matters here
 

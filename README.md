@@ -1,7 +1,9 @@
 # Model Auctions — modelauctions.net
 
-Houston's curated talent and photography network. A static site on GitHub Pages, part of
-the Cadenza Arthouse group.
+Houston's curated talent and photography network. A static site, part of the Cadenza Arthouse
+group, served by the Cloudflare Worker `modelauctions-site` — deployed by Workers Builds on
+every push to `main`. **Not GitHub Pages**, despite what this line said until 2026-09-09;
+verified from live response headers, which carry no GitHub Pages signature at all.
 
 ## What is here
 
