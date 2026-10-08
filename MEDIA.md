@@ -175,4 +175,4 @@ FROZEN when all four are true:
       been checked against a wall clock on two devices.
 - [ ] The owner has ruled on the Sunrise title and the Vigil placement.
 - [ ] A day schedule exists or has been explicitly declined for V1.
-- [x] The page has been ported to cadenzaarthouse.com -- built 2026-10-08 (`CadenzaFeed/media/`) on a branch; it is live when that branch is merged and pushed on the owner's word.
+- [x] The page has been ported to cadenzaarthouse.com -- built 2026-10-08 (`CadenzaFeed/media/`) and published the same day on the owner's word; live at https://cadenzaarthouse.com/media/.
