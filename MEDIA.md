@@ -6,7 +6,7 @@
 
 ## 0. Two sites since 2026-10-08
 
-The owner's ask, in his words: *"move the non-fashion related things to the Cadenza Art House
+The owner's ask, in his words: *"move the non-fashion related things to the Cadenza [Arthouse]
 media page, and the model auctions page can have all the modeling content."* (Same day's voice
 log `20261008-01`: *"I don't need to have all the Houston stuff, the atmosphere ... only things
 related to fashion photo shoots and models."*)
