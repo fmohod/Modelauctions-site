@@ -14,7 +14,7 @@ verified from live response headers, which carry no GitHub Pages signature at al
 | `models/` | **the model application form.** Uploads to R2, then emails. See `INTAKE.md` |
 | `photographers/` | photography booking enquiry. Email only, no uploads |
 | `thank-you/` | post-submission page for both forms |
-| `media/` | **the Media page** — four channels of Cadenza Arthouse video presented like live TV, scheduled by arithmetic over YouTube-hosted clips. Testing ground for the cadenzaarthouse.com media page. See `MEDIA.md` |
+| `media/` | **the Media page** — modeling content only (one channel, Fashion Shows) presented like live TV, scheduled by arithmetic over YouTube-hosted clips. The rest of the video moved to cadenzaarthouse.com/media/ on 2026-10-08; the engine is mirrored there. See `MEDIA.md` |
 | `legal/terms/` | Terms of Use. Six Parts; badges mark what is in effect now vs. what waits for a feature launch. §1.6 and §1.8 describe the intake pipeline and must move with `INTAKE.md` |
 | `0010/`, `0011/` | published event coverage, same article format as CadenzaFeed |
 | `style.css`, `assets/`, `images/` | presentation |
