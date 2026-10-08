@@ -1,8 +1,33 @@
 # Media — the "live TV" wrapper over YouTube-hosted video
 
-**Status: DRAFT (2026-09-04), version 1 built and live at `/media/`.** Freeze criteria at the
-bottom. This is the testing ground for the Cadenza Arthouse media page; what survives here moves
-to cadenzaarthouse.com.
+**Status: DRAFT (2026-09-04), version 1 built and live at `/media/`; split across two sites on
+2026-10-08 (§0).** Freeze criteria at the bottom. This file is the contract for the engine on
+**both** sites.
+
+## 0. Two sites since 2026-10-08
+
+The owner's ask, in his words: *"move the non-fashion related things to the Cadenza Art House
+media page, and the model auctions page can have all the modeling content."* (Same day's voice
+log `20261008-01`: *"I don't need to have all the Houston stuff, the atmosphere ... only things
+related to fashion photo shoots and models."*)
+
+| | Model Auctions (`modelauctions.net/media/`) | Cadenza Arthouse (`cadenzaarthouse.com/media/`) |
+|---|---|---|
+| carries | **modeling content:** the Fashion Shows playlist (5 videos) | everything else: Live Shows (2), Houston (4), Atmosphere (1 + two Universe B trailers), and the Vigil/Canvass report |
+| repo | this one | `CadenzaFeed`, folder `media/` |
+| manifest | `media/channels.json` | `media/channels.json` there |
+
+**The rule is by playlist, because channels are his playlists:** a video belongs to the site its
+playlist belongs to, and a video in no playlist is not modeling content. Two calls were mine, and
+each is one line to reverse: *Live Shows* (Psychotic Princess, an Empyre Room stage show; Melanin
+Muse Art Show) moved as a whole playlist, and the Universe B trailers travelled with *Atmosphere*.
+If Psychotic Princess is modeling content it belongs with Fashion Shows.
+
+**The engine is mirrored, not shared** (no build step): `media/media.js` is the same file line for
+line on both sites, and the stylesheet is ported (`style.css` § MEDIA PAGE here, `media/media.css`
+there, with a lightened bronze accent on the main site's light page). A fix to either goes to both.
+Page copy that depends on the lineup is never hard-coded: `data-channel-count` in the HTML is
+filled from the manifest. `CadenzaFeed/media/README.md` has the table of what is shared.
 
 ## 1. What the owner asked for
 
@@ -40,7 +65,8 @@ visit; nothing is remembered between visits.
 | styles | `style.css` § MEDIA PAGE | shared stylesheet, same as every other page |
 
 **Channels are the owner's YouTube playlists**, in his order, with his names: Live Shows, Fashion
-Shows, Houston, Atmosphere. A video may appear in more than one lineup. Videos on the channel but
+Shows, Houston, Atmosphere. (Since 2026-10-08 this site carries Fashion Shows only; the other three
+are on cadenzaarthouse.com, §0.) A video may appear in more than one lineup. Videos on the channel but
 in no playlist show under *Also on the channel* in browse and play as a one-item channel.
 
 ## 3. The schedule is arithmetic, not state
@@ -149,4 +175,4 @@ FROZEN when all four are true:
       been checked against a wall clock on two devices.
 - [ ] The owner has ruled on the Sunrise title and the Vigil placement.
 - [ ] A day schedule exists or has been explicitly declined for V1.
-- [ ] The page has been ported to cadenzaarthouse.com, or the decision to keep it here is recorded.
+- [x] The page has been ported to cadenzaarthouse.com -- built 2026-10-08 (`CadenzaFeed/media/`) on a branch; it is live when that branch is merged and pushed on the owner's word.

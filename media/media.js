@@ -521,6 +521,13 @@
     .then(function (m) {
       state.manifest = normalize(m);
       state.channels = state.manifest.channels;
+      // How many channels THIS site carries, for the copy that says so: the
+      // engine is mirrored between two sites with different lineups, so the
+      // number is never written into the page.
+      var channelCount = state.channels.length;
+      $$('[data-channel-count]').forEach(function (el) {
+        el.textContent = channelCount + (channelCount === 1 ? ' channel' : ' channels');
+      });
       renderPoster();
       renderGuide();
       renderBrowse();
