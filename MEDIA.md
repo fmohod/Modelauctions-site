@@ -1,8 +1,8 @@
 # Media — the "live TV" wrapper over YouTube-hosted video
 
 **Status: DRAFT (2026-09-04), version 1 built and live at `/media/`; split across two sites on
-2026-10-08 (§0).** Freeze criteria at the bottom. This file is the contract for the engine on
-**both** sites.
+2026-10-08 (§0); the manifest's author became CAMT's Channel Manager on 2026-10-09 (§5).** Freeze
+criteria at the bottom. This file is the contract for the engine on **both** sites.
 
 ## 0. Two sites since 2026-10-08
 
@@ -64,10 +64,11 @@ visit; nothing is remembered between visits.
 | channel art | `media/art/*.jpg` | one image per channel for the browse hero cards |
 | styles | `style.css` § MEDIA PAGE | shared stylesheet, same as every other page |
 
-**Channels are the owner's YouTube playlists**, in his order, with his names: Live Shows, Fashion
-Shows, Houston, Atmosphere. (Since 2026-10-08 this site carries Fashion Shows only; the other three
-are on cadenzaarthouse.com, §0.) A video may appear in more than one lineup. Videos on the channel but
-in no playlist show under *Also on the channel* in browse and play as a one-item channel.
+**Channels are lineups the owner keeps in CAMT's Channel Manager** (§5), in his order, with his names:
+Live Shows, Fashion Shows, Houston, Atmosphere. They began as his YouTube playlists, and a channel's
+playlist id is kept only as a reference. (Since 2026-10-08 this site carries Fashion Shows only; the
+other three are on cadenzaarthouse.com, §0.) A video may appear in more than one lineup. Videos on the
+channel but in no lineup show under *Also on the channel* in browse and play as a one-item channel.
 
 ## 3. The schedule is arithmetic, not state
 
@@ -132,15 +133,24 @@ among the service providers that see technical data.
 The page plays `lineup` then `extra`, in order. A lineup id that is not in `videos` throws at load
 and the page says so.
 
-**Who writes it.** CAMT `jobs\youtube_lineup.py` (menu 36; channel #8 under AGENTS rule 8, owner
-ruling 2026-09-04). `fetch` rewrites every channel's `lineup` from its YouTube playlist in playlist
-order, takes exact durations from the API, adds new videos to `videos`, and leaves `extra` alone,
-so a clip the owner wants on a channel without moving it into the playlist survives. `title` is
-rewritten from YouTube only while it still equals `yt_title` (the last YouTube title seen); a title
-he edited stays. `location`, `year` and a non-empty `desc` are never overwritten. The API key is a
-Cloud-project credential in CAMT's DPAPI box; it is never in this repo or in page source. Offline,
-the job says so and exits 2 and the page keeps serving whatever manifest it has. Until the key
-exists, the manifest is maintained by hand exactly as before.
+**Who writes it.** Since 2026-10-09 (CAMT `ADR/ADR-0020`) **CAMT's Channel Manager is the only author
+of this file, on both sites** (run.bat 40, `jobs\channels.py`; its contract is CAMT's
+`CHANNEL_MANAGER.md`). Do not hand-edit the manifest and do not push a change to it from a shared
+checkout. The manager keeps its own model of each lineup, emits this file from it, and publishes from
+its own clean clone: it checks every video, shows a diff, asks the owner to type a phrase, pushes,
+waits for the deploy, and then fetches the **live** file and compares it with what was intended. A
+manifest changed outside CAMT is surfaced as drift and refused until the owner adopts it.
+
+The format is fixed, because the manager re-emits the file byte for byte:
+`json.dumps(indent=2, ensure_ascii=False)`, LF line endings, no trailing newline. A channel's
+`playlist` id is **reference only**: a YouTube playlist no longer drives a lineup (the public feeds
+already disagreed with what was live), and CAMT's `youtube_lineup.py fetch` is import-only, so it
+proposes additions into the manager's draft and never rewrites, removes, reorders or commits. A
+channel with **no videos breaks this page** (the engine divides the clock by the loop length and then
+reads the first video), so the manager refuses to publish one. The YouTube API key is **optional**:
+without it, titles come from YouTube's public lookup and exact lengths from the player in the
+owner's own browser. A key, if one is stored, is a Cloud-project credential in CAMT's DPAPI box and is
+never in this repo or in page source.
 
 ## 6. Decisions taken in this build, each reversible
 
@@ -163,7 +173,7 @@ exists, the manifest is maintained by hand exactly as before.
 |---|---|
 | Short catalog | every loop is under eleven minutes, so the guide repeats fast. Long recordings fix this, not code |
 | No per-day schedule | he described *"Aisha's Sunday class … weekly on Sundays"*. V1 is one loop per channel, all day. A day/hour grid over the loop is the next step and the manifest shape allows it |
-| Manifest by hand until the key lands | `jobs\youtube_lineup.py fetch` writes it from the playlists once the YouTube Data API key is stored (`set-key`). Adding a video to a playlist on YouTube is then the whole workflow |
+| Lineup health is checked on demand | the Channel Manager's health check (`jobs\channels.py check [--notify]`, or `H` in menu 40) says when a video goes private, disappears or changes length. It is not scheduled yet: that waits on the owner's word. Adding or removing a video is the manager's `A` and `R`, then Publish |
 | Autoplay policy | browsers permit autoplay after a click; the first click is the user gesture, so the player starts. If a browser still refuses, the YouTube play button is right there |
 | Atmosphere art | none; falls back to the clip thumbnail |
 
