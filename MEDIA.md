@@ -1,8 +1,8 @@
 # Media — the "live TV" wrapper over YouTube-hosted video
 
 **Status: DRAFT (2026-09-04), version 1 built and live at `/media/`; split across two sites on
-2026-10-08 (§0); the manifest's author became CAMT's Channel Manager on 2026-10-09 (§5).** Freeze
-criteria at the bottom. This file is the contract for the engine on **both** sites.
+2026-10-08 (§0); on 2026-10-09 the manifest's author became CAMT's Channel Manager (§5) and the page
+dropped the site masthead for a bar and footer of its own (§2, §6).** Freeze criteria at the bottom. This file is the contract for the engine on **both** sites.
 
 ## 0. Two sites since 2026-10-08
 
@@ -58,7 +58,8 @@ visit; nothing is remembered between visits.
 
 | Piece | File | Job |
 |---|---|---|
-| the page | `media/index.html` | stage (poster → player), view tabs, guide, browse, app, the honesty note |
+| the page | `media/index.html` | stage (poster → player), view tabs, guide, browse, app, the honesty note; and, since 2026-10-09, its own slim bar, Menu panel and footer: **it has no site masthead** |
+| the page's own chrome | `media/chrome.css`, `media/chrome.js` | the bar (Back to Model Auctions, the brand, Menu), the Menu panel that holds the site's navigation, the footer, and the bar's slide-away on scroll. Loaded by this page only; `chrome.js` is the same file as on cadenzaarthouse.com |
 | the engine | `media/media.js` | schedule math, guide and browse rendering, click-to-load player |
 | the lineup | `media/channels.json` | channels, their order, each video's id, title, duration |
 | channel art | `media/art/*.jpg` | one image per channel for the browse hero cards |
@@ -166,6 +167,12 @@ never in this repo or in page source.
   It shows under *Also on the channel*. His call whether it belongs on Houston.
 - **"On now" is labeled *On now*, not *LIVE*.** The note under the page says plainly that
   nothing streams. The feeling is the point; the claim would be a lie.
+- **The page has no masthead (2026-10-09, owner's ask).** A site masthead above a streaming screen reads as two
+  different products, so `/media/` has a slim dark bar of its own (Back to Model Auctions, the brand, and a Menu
+  holding the site's navigation, where Media and Streaming move their *You are here* marker with the view) and its
+  own footer. The footer is written without the sitewide "No trackers" line: Cloudflare adds its own scripts to every
+  page it serves, so that claim is not safe to repeat in new copy. The engine (`media.js`) is untouched. Do not
+  restore the masthead here; the same change was made on cadenzaarthouse.com.
 
 ## 7. Known gaps
 

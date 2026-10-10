@@ -43,6 +43,16 @@ Cloudflare R2 bucket, and only then sends a notification email. Three consequenc
 The template and checklist are in `F:\Apps\CadenzaFeed\PUBLISHING.md`; the record model
 they produce is `ARCHIVE_RECORD_SPEC.md` in CAMT.
 
+## The media page
+
+`/media/` is the Model Auctions media page: modeling content only, a streaming-service wrapper over the owner's YouTube
+videos (contract `MEDIA.md`; `media/media.js` is mirrored line for line with cadenzaarthouse.com). **It has no masthead,
+on purpose** (owner's ask, 2026-10-09): it has its own slim dark bar (Back, brand, Menu) and footer, with the bar's
+slide-away and the Menu panel in `media/chrome.js` (the same file as on cadenzaarthouse.com) and the rules in
+`media/chrome.css`. Do not restore the masthead there. **`media/channels.json` is written by CAMT's Channel Manager only**
+(CAMT `CHANNEL_MANAGER.md`): never hand-edit it or push a change to it. Measured 2026-10-09: a lineup change published and
+then undone through the manager was served by this edge as soon as Workers Builds reported success (0 s of waiting, both times).
+
 ## Where the rest lives
 
 - `INTAKE.md` — this repo. The submission pipeline, in full.
