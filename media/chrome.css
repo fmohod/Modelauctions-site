@@ -1,0 +1,302 @@
+/* ============================================================
+   THE MEDIA PAGE'S OWN CHROME -- modelauctions.net/media/
+   (owner's ask, 2026-10-09: the same treatment as cadenzaarthouse.com/media/)
+
+   This page does not wear the site masthead any more. It has a slim dark
+   bar of its own -- a way back to the site, the brand, and a Menu that holds
+   the site's navigation -- and its own footer. The bar slides away when you
+   scroll down and returns when you scroll up (chrome.js, the same file as
+   on cadenzaarthouse.com). These rules are loaded by media/index.html only;
+   the engine's rules (the "MEDIA PAGE" sections of ../style.css) are
+   untouched, and so is media.js.
+
+   Palette: this site's own, near-black #0D0D0D, off-white #F0EDE6, gold
+   #C49A3C (about 7.5:1 on near-black). Controls carry words (Back, Menu,
+   Close), not bare icons: a button that cannot be found is not a button.
+   ============================================================ */
+
+/* the whole page is dark: nothing of any light colour shows above, below or in the overscroll */
+html.media-html { background: #0D0D0D; color-scheme: dark; }
+
+.mx-skip {
+  position: absolute;
+  left: 12px;
+  top: -56px;
+  z-index: 400;
+  background: #C49A3C;
+  color: #0D0D0D;
+  padding: 12px 16px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mx-skip:focus { top: 10px; }
+
+.mx-ico { display: block; flex: 0 0 auto; width: 20px; height: 20px; }
+
+/* the bar */
+.mx-bar {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: rgba(13,13,13,0.94);
+  -webkit-backdrop-filter: blur(12px);
+          backdrop-filter: blur(12px);
+  border-bottom: 1px solid #1F1F1F;
+  transition: transform 0.28s ease;
+}
+
+.mx-bar.is-away { transform: translateY(-100%); }
+
+.mx-bar-inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 24px;
+  min-height: 64px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 16px;
+}
+
+.mx-back, .mx-menu-btn, .mx-close {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 16px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #F0EDE6;
+  background: transparent;
+  border: 1px solid #3A3A3A;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.mx-back { justify-self: start; padding-left: 10px; }
+.mx-menu-btn { justify-self: end; }
+.mx-back-short { display: none; }
+
+.mx-back:hover, .mx-menu-btn:hover, .mx-close:hover { border-color: #C49A3C; color: #C49A3C; }
+
+.mx-back:focus-visible, .mx-menu-btn:focus-visible, .mx-close:focus-visible,
+.mx-brand:focus-visible, .mx-nav a:focus-visible, .mx-aside a:focus-visible,
+.mx-footer-links a:focus-visible, .mx-footer-legal a:focus-visible { outline: 2px solid #C49A3C; outline-offset: 3px; }
+
+.mx-brand { display: inline-flex; align-items: center; gap: 12px; color: #F0EDE6; }
+
+/* the master logo, tinted gold (a black mark on transparent: a mask over a gold fill is the honest recolor) */
+.mx-brand-mark {
+  display: block;
+  flex: 0 0 auto;
+  width: 52px;
+  height: 26px;
+  background: #C49A3C;
+  -webkit-mask: url('../assets/logo.png') center / contain no-repeat;
+          mask: url('../assets/logo.png') center / contain no-repeat;
+}
+
+.mx-brand-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.75rem;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.mx-brand-sec { color: #C49A3C; }
+
+/* the menu: a panel from the right over a darkened page */
+.mx-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 250;
+  background: rgba(0,0,0,0.62);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0s linear 0.25s;
+}
+
+.mx-drawer {
+  position: fixed;
+  top: 0; right: 0; bottom: 0;
+  z-index: 260;
+  width: min(400px, 88vw);
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 18px 22px 28px;
+  background: #121212;
+  border-left: 1px solid #2A2A2A;
+  box-shadow: -18px 0 50px rgba(0,0,0,0.5);
+  overflow-y: auto;
+  transform: translateX(104%);
+  visibility: hidden;
+  transition: transform 0.3s ease, visibility 0s linear 0.3s;
+}
+
+html.mx-open { overflow: hidden; }
+html.mx-open .mx-scrim { opacity: 1; visibility: visible; transition: opacity 0.25s ease; }
+html.mx-open .mx-drawer { transform: none; visibility: visible; transition: transform 0.3s ease; }
+
+.mx-drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #2A2A2A;
+}
+
+.mx-drawer-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.1em;
+  color: #C49A3C;
+}
+
+.mx-nav { display: flex; flex-direction: column; }
+
+.mx-nav a, .mx-nav .mx-soon {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.1rem;
+  letter-spacing: 0.08em;
+  line-height: 1.15;
+  color: #F0EDE6;
+  border-bottom: 1px solid #1F1F1F;
+  transition: color 0.2s, padding-left 0.2s;
+}
+
+.mx-nav a:hover, .mx-nav a:focus-visible { color: #C49A3C; padding-left: 6px; }
+.mx-nav a.active { color: #C49A3C; }
+
+/* "You are here" shows only on the link for the view that is open (media.js moves .active between Media and Streaming) */
+.mx-nav small {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #C49A3C;
+}
+
+.mx-nav a small { display: none; }
+.mx-nav a.active small { display: inline; }
+
+/* pages that do not exist yet: shown, dimmed, and not links (as in the site's own navigation) */
+.mx-nav .mx-soon { color: #555; }
+.mx-nav .mx-soon small { color: #777; }
+
+.mx-aside { display: flex; flex-direction: column; margin-top: auto; }
+
+.mx-aside a {
+  padding: 14px 0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.76rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #C8C4BC;
+  border-top: 1px solid #1F1F1F;
+}
+
+.mx-aside a:hover, .mx-aside a:focus-visible { color: #C49A3C; }
+
+/* the page's own footer */
+.mx-footer { background: #0A0A0A; border-top: 1px solid #1F1F1F; color: #8a8a8a; }
+
+.mx-footer-inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 36px 24px 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.mx-footer-brand { display: flex; align-items: center; gap: 12px; }
+.mx-brand-mark-sm { width: 40px; height: 20px; }
+
+.mx-footer-wordmark {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: 0.1em;
+  color: #F0EDE6;
+}
+
+.mx-footer-links { display: flex; flex-wrap: wrap; gap: 4px 26px; }
+
+.mx-footer-links a {
+  padding: 8px 0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #C8C4BC;
+}
+
+.mx-footer-links a:hover { color: #C49A3C; }
+
+.mx-footer-legal {
+  max-width: 760px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  line-height: 1.8;
+  color: #8a8a8a;
+}
+
+.mx-footer-legal a { color: #C8C4BC; text-decoration: underline; text-underline-offset: 3px; }
+.mx-footer-legal a:hover { color: #C49A3C; }
+
+/* the honesty note says plainly that nothing here is a live stream: it must be readable, not a whisper */
+.media-page .media-note { color: #9a9a9a; }
+
+/* so the bar never covers the heading a jump lands on, and the footer clears the phone tab bar */
+.stage { scroll-margin-top: 76px; }
+.media-app-mode .mx-footer-inner { padding-bottom: 130px; }
+/* in app mode the bar above already carries the brand mark */
+.media-app-mode .app-bar .app-logo { display: none; }
+
+@media (max-width: 760px) {
+  .mx-bar-inner { padding: 0 14px; gap: 8px; min-height: 58px; }
+  .mx-back-long { display: none; }
+  .mx-back-short { display: inline; }
+  .mx-back, .mx-menu-btn { padding: 0 14px; }
+  .mx-back { padding-left: 8px; }
+  .mx-brand-name { font-size: 1.5rem; }
+  .mx-nav a, .mx-nav .mx-soon { font-size: 2rem; }
+}
+
+@media (max-width: 560px) {
+  .mx-brand-co { display: none; }
+  .mx-brand-mark { width: 44px; height: 22px; }
+
+  /* the poster is only ~210px tall on a phone: the play button used to sit on top of the title.
+     Lift it into the upper half and shrink the type a little so the two never overlap. */
+  .poster-play { top: 28%; width: 52px; height: 52px; font-size: 1.1rem; }
+  .poster-text { left: 16px; right: 16px; bottom: 16px; }
+  /* two lines at most, so a long title can never grow up into the play button */
+  .poster-title {
+    font-size: clamp(1.35rem, 6.4vw, 1.9rem);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mx-bar, .mx-scrim, .mx-drawer, .mx-nav a { transition: none; }
+}
