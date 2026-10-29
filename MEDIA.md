@@ -107,7 +107,7 @@ skews every "on now" after it in that loop. Keep them exact.
 - *Join live* recomputes the offset and rejoins; *From the top* restarts the current video;
   *Open on YouTube* is a plain link.
 
-The footer says *No trackers*; this page keeps it true up to the moment the viewer chooses to
+The footer no longer says *No trackers* (removed 2026-10-28 on the owner's ruling: the site has Cloudflare's analytics, used by us only); this page still loads nothing from the video host until the viewer chooses to
 play, and says so in the note at the bottom. The Terms (`legal/terms/` §1.8) list the video host
 among the service providers that see technical data.
 
@@ -170,7 +170,7 @@ never in this repo or in page source.
 - **The page has no masthead (2026-10-09, owner's ask).** A site masthead above a streaming screen reads as two
   different products, so `/media/` has a slim dark bar of its own (Back to Model Auctions, the brand, and a Menu
   holding the site's navigation, where Media and Streaming move their *You are here* marker with the view) and its
-  own footer. The footer is written without the sitewide "No trackers" line: Cloudflare adds its own scripts to every
+  own footer. The footer is written without a "No trackers" line (the sitewide footers dropped it on 2026-10-28 on the owner's ruling): Cloudflare adds its own scripts to every
   page it serves, so that claim is not safe to repeat in new copy. The engine (`media.js`) is untouched. Do not
   restore the masthead here; the same change was made on cadenzaarthouse.com.
 
