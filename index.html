@@ -3,11 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
-  <link rel="icon" href="/assets/favicon-32x32.png" type="image/png" sizes="32x32">
-  <link rel="icon" href="/assets/favicon-192x192.png" type="image/png" sizes="192x192">
-  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" sizes="180x180">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <title>Model Auctions | Talent. Photography. Creative Industry.</title>
+  <meta name="description" content="Model Auctions is Houston's talent and photography network: runway coverage, features on models and designers, and a place to apply as a model or book a photographer.">
+  <link rel="canonical" href="https://modelauctions.net/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Model Auctions">
+  <meta property="og:title" content="Model Auctions | Talent. Photography. Creative Industry.">
+  <meta property="og:description" content="Model Auctions is Houston's talent and photography network: runway coverage, features on models and designers, and a place to apply as a model or book a photographer.">
+  <meta property="og:url" content="https://modelauctions.net/">
+  <meta property="og:image" content="https://modelauctions.net/assets/logo.png">
+  <meta name="twitter:card" content="summary">
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -153,6 +159,7 @@
                    || doc.querySelector('p')?.textContent?.trim().slice(0, 140) + '…'
                    || '';
         const date  = doc.querySelector('meta[name="date"]')?.content || '';
+        const label = doc.querySelector('meta[name="card-label"]')?.content || '';
 
         // Thumb: check jpg → png → fall back to placeholder
         let thumb = PLACEHOLDER;
@@ -167,7 +174,7 @@
           } catch {}
         }
 
-        return { folder, title, desc, date, thumb, url };
+        return { folder, title, desc, date, thumb, url, label };
       } catch {
         return { folder, title: `Feature ${folder}`, desc: '', date: '', thumb: PLACEHOLDER, url: `${BASE_URL}/${folder}/` };
       }
@@ -189,14 +196,14 @@
           <a href="${meta.url}" class="card-image-link">
             <div class="card-image">
               <img src="${meta.thumb}" alt="${meta.title}" loading="lazy">
-              <div class="card-label">${CARD_LABELS[index] || 'Featured'}</div>
+              <div class="card-label">${meta.label || CARD_LABELS[index] || 'Featured'}</div>
             </div>
           </a>
           <div class="card-body">
             ${meta.date ? `<time>${formatDate(meta.date)}</time>` : ''}
             <h2><a href="${meta.url}">${meta.title}</a></h2>
             ${meta.desc ? `<p>${meta.desc}</p>` : ''}
-            <a href="${meta.url}" class="read-link">View Profile →</a>
+            <a href="${meta.url}" class="read-link">${meta.label ? 'See What Is Coming' : 'Read the Feature'} →</a>
           </div>
         </article>`;
     }
