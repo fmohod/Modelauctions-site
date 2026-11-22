@@ -16,7 +16,9 @@ verified from live response headers, which carry no GitHub Pages signature at al
 | `thank-you/` | post-submission page for both forms |
 | `media/` | **the Media page** — modeling content only (one channel, Fashion Shows) presented like live TV, scheduled by arithmetic over YouTube-hosted clips. The rest of the video moved to cadenzaarthouse.com/media/ on 2026-10-08; the engine is mirrored there. See `MEDIA.md` |
 | `legal/terms/` | Terms of Use. Six Parts; badges mark what is in effect now vs. what waits for a feature launch. §1.6 and §1.8 describe the intake pipeline and must move with `INTAKE.md` |
-| `0010/`, `0011/` | published event coverage, same article format as CadenzaFeed |
+| `0001/`, `0002/` | published event coverage, same article format as CadenzaFeed (numbered 0010 and 0011 until 2026-11-22; `_redirects` forwards the old addresses) |
+| `0003/` | a coming-soon entry for the next feature |
+| `sitemap.xml`, `robots.txt`, `_redirects`, `.assetsignore` | what search engines read, the old-address redirects, and the list of files the Worker must not serve |
 | `style.css`, `assets/`, `images/` | presentation |
 
 ## Read this before touching the forms
@@ -45,7 +47,7 @@ form is not an ordinary contact form and must not be edited like one. In particu
 
 ## Publishing
 
-Articles (`0010/`, `0011/`) follow the same page format as CadenzaFeed; that convention is
+Articles (`0001/`, `0002/`) follow the same page format as CadenzaFeed; that convention is
 documented in `F:\Apps\CadenzaFeed\PUBLISHING.md`, and the record model it produces is
 `ARCHIVE_RECORD_SPEC.md` in CAMT. **Published coverage and applicant data are separate
 concerns** — see `INTAKE.md` §6.

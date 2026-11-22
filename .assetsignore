@@ -1,0 +1,8 @@
+# Not part of the site. Without this file the Worker serves the whole checkout.
+.git
+.gitignore
+.assetsignore
+*.md
+wrangler.jsonc
+wrangler.toml
+node_modules

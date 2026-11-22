@@ -158,7 +158,7 @@ never in this repo or in page source.
 - **Titles are YouTube's**, except one: the Atmosphere clip is titled *"Cadenza Sunrise"* on
   YouTube and shows here as *"Sunrise"*, because the bare word is ruled a factual error
   (`F:\README.md`). Owner to say whether the YouTube title itself should change.
-- **Channel art reuses already-published images only:** this site's 0011 thumbnail for Fashion
+- **Channel art reuses already-published images only:** this site's 0002 thumbnail (numbered 0011 at the time) for Fashion
   Shows, CadenzaFeed's 0006 (Culture Sessions) for Houston and 0012 (Bisong artists) for Live
   Shows, each resized to 1280 wide. Nothing was pulled from the archive that had not already
   passed the publication gate (CAS §9.13). Atmosphere has no art yet and falls back to its

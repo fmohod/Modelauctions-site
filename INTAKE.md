@@ -183,7 +183,7 @@ Three standing rules that already bind, stated here so the site side knows them:
 
 ### Editorial coverage is not applicant data
 
-`0010/` and `0011/` are published articles — event coverage that names people, in the same
+`0001/` and `0002/` are published articles — event coverage that names people, in the same
 format CadenzaFeed uses. They are **not** applications and nothing in this document governs
 them. Do not let the two flow together: a name that appears in a runway report has not
 consented to appear in a talent database, and an applicant has not consented to be written

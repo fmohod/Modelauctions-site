@@ -30,7 +30,7 @@ Cloudflare R2 bucket, and only then sends a notification email. Three consequenc
 - **Nothing on this site may publish an applicant.** Publication is gated in CAMT and
   raised only by the owner, per record (CAS §9.13). An application arriving does not make
   anyone publishable, and there is no automatic path from a submission to a public page.
-- **Do not merge applicant data with editorial coverage.** `0010/` and `0011/` are
+- **Do not merge applicant data with editorial coverage.** `0001/` and `0002/` are
   published event articles that name people. Those names came from reporting, not from
   applications, and the two must not flow together in either direction — see `INTAKE.md` §6.
 - **Do not add fields to the application without updating `INTAKE.md` in the same session.**
@@ -39,7 +39,22 @@ Cloudflare R2 bucket, and only then sends a notification email. Three consequenc
 
 ## Articles
 
-`0010/` and `0011/` follow the CadenzaFeed article format, including the game meta block.
+`0001/` and `0002/` follow the CadenzaFeed article format, including the game meta block.
+`0003/` is a coming-soon entry (the next feature, announced before it is written).
+
+**Numbering is this site's own, 0001 upward (renumbered 2026-11-22).** The first two articles were
+copied in from cadenzaarthouse.com under that site's numbers, 0010 and 0011; `_redirects` sends the
+old addresses to the new ones with a 301. Never reuse 0010 or 0011 until the count reaches them, and
+then remove their lines from `_redirects` first, because a redirect wins over a real folder.
+
+**A new article needs four things in the same push:** its folder, a `<url>` line in `sitemap.xml`
+(`lastmod` is the date of the last real change to that page, never a guess), `article-id` equal to
+the folder name (the slideshow reads `<id>/images` by it), and a self `canonical`. A page may name
+its homepage card with `<meta name="card-label" content="Coming Soon">`.
+
+**`.assetsignore` keeps the checkout out of the site.** The Worker serves the repo root, so without
+it `.git/`, these `.md` files and the generated `wrangler.jsonc` are public pages (they were until
+2026-11-22). `robots.txt` names the sitemap; Cloudflare adds its managed block above it.
 The template and checklist are in `F:\Apps\CadenzaFeed\PUBLISHING.md`; the record model
 they produce is `ARCHIVE_RECORD_SPEC.md` in CAMT.
 
