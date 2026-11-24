@@ -40,7 +40,12 @@ Cloudflare R2 bucket, and only then sends a notification email. Three consequenc
 ## Articles
 
 `0001/` and `0002/` follow the CadenzaFeed article format, including the game meta block.
-`0003/` is a coming-soon entry (the next feature, announced before it is written).
+`0003/` is "Coming Up on Model Auctions" (2026-11-24): a walk-through of full-screen scenes in the pattern of the
+first Houston Yogis article, with its own `slides.css` (the look is in the token blocks at the top) and `slides.js`
+(enhancement only: with scripts off the scenes stack). It is a teaser: it links to the Media page and plays nothing,
+shows four of the owner's own Lightroom edits from Canvas 2 Catwalk (`0003/images/`, metadata stripped), names the
+two interview subjects by first name only on his word, and ties no person to Prairie View. The masthead does not
+stick on that page (`.scenes-page`), so each scene gets the whole screen.
 
 **Numbering is this site's own, 0001 upward (renumbered 2026-11-22).** The first two articles were
 copied in from cadenzaarthouse.com under that site's numbers, 0010 and 0011; `_redirects` sends the
