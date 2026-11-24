@@ -57,6 +57,13 @@ then remove their lines from `_redirects` first, because a redirect wins over a 
 the folder name (the slideshow reads `<id>/images` by it), and a self `canonical`. A page may name
 its homepage card with `<meta name="card-label" content="Coming Soon">`.
 
+**`thumb.jpg` is 16:10, because the homepage card is.** The card frame is `aspect-ratio: 16 / 10`
+with `object-fit: cover` (`style.css`, `.card-image`), so any other shape is cropped: a 1200x630
+share image lost 8% off each side and clipped its own title (owner's note, 2026-11-24). Build it at
+1600x1000. Keep words inside 8% margins, out of the top-left corner (the label chip covers about
+30% of the width and 15% of the height there), and inside the middle 84% of the height, since the
+same file is the share image and social sites crop it to about 1.91:1 from the center.
+
 **`.assetsignore` keeps the checkout out of the site.** The Worker serves the repo root, so without
 it `.git/`, these `.md` files and the generated `wrangler.jsonc` are public pages (they were until
 2026-11-22). `robots.txt` names the sitemap; Cloudflare adds its managed block above it.
